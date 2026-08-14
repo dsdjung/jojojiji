@@ -12,6 +12,9 @@ export const STATUS_REJECTED = 'rejected';
 
 export const VALID_STATUSES = [STATUS_PENDING, STATUS_APPROVED, STATUS_REJECTED];
 
+export const PROVIDER_GOOGLE = 'google';
+export const PROVIDER_ANONYMOUS = 'anonymous';
+
 export const LIMITS = {
   name: { min: 1, max: 80 },
   email: { max: 254 },
@@ -29,10 +32,17 @@ const SLUG_RE = /^[a-z0-9][a-z0-9/-]*$/;
 /**
  * Validate and normalise a submitted comment.
  *
+ * In `anonymous` mode the commenter supplies their own name and optional email.
+ * Otherwise identity comes from the verified Google profile and any name or
+ * email in the request body is ignored, so a signed-in commenter cannot post
+ * under someone else's name.
+ *
  * @param {object} input Raw parsed JSON body from the client.
+ * @param {{anonymous?: boolean}} [options]
  * @returns {{ok: true, value: object} | {ok: false, errors: string[]}}
  */
-export function validateComment(input) {
+export function validateComment(input, options = {}) {
+  const { anonymous = false } = options;
   const errors = [];
 
   if (!input || typeof input !== 'object') {
@@ -51,20 +61,24 @@ export function validateComment(input) {
     errors.push('Missing or invalid post reference.');
   }
 
-  const name = typeof input.name === 'string' ? input.name.trim() : '';
-  if (name.length < LIMITS.name.min) {
-    errors.push('Name is required.');
-  } else if (name.length > LIMITS.name.max) {
-    errors.push(`Name must be ${LIMITS.name.max} characters or fewer.`);
-  }
-
-  const rawEmail = typeof input.email === 'string' ? input.email.trim() : '';
+  let name = null;
   let email = null;
-  if (rawEmail !== '') {
-    if (rawEmail.length > LIMITS.email.max || !EMAIL_RE.test(rawEmail)) {
-      errors.push('Email address is not valid.');
-    } else {
-      email = rawEmail.toLowerCase();
+
+  if (anonymous) {
+    name = typeof input.name === 'string' ? input.name.trim() : '';
+    if (name.length < LIMITS.name.min) {
+      errors.push('Name is required.');
+    } else if (name.length > LIMITS.name.max) {
+      errors.push(`Name must be ${LIMITS.name.max} characters or fewer.`);
+    }
+
+    const rawEmail = typeof input.email === 'string' ? input.email.trim() : '';
+    if (rawEmail !== '') {
+      if (rawEmail.length > LIMITS.email.max || !EMAIL_RE.test(rawEmail)) {
+        errors.push('Email address is not valid.');
+      } else {
+        email = rawEmail.toLowerCase();
+      }
     }
   }
 
@@ -136,11 +150,11 @@ export function safeEqual(a, b) {
   return diff === 0;
 }
 
-/** Fetch approved comments for one post, oldest first. */
+/** Fetch approved comments for one post, oldest first. Never returns emails. */
 export async function listApproved(db, slug) {
   const { results } = await db
     .prepare(
-      `SELECT id, author_name, body, created_at
+      `SELECT id, author_name, body, created_at, auth_provider, avatar_url
        FROM comments
        WHERE post_slug = ?1 AND status = ?2
        ORDER BY created_at ASC`
@@ -153,6 +167,8 @@ export async function listApproved(db, slug) {
     name: row.author_name,
     body: row.body,
     createdAt: row.created_at,
+    provider: row.auth_provider ?? PROVIDER_ANONYMOUS,
+    avatar: row.avatar_url ?? null,
   }));
 }
 
@@ -168,17 +184,36 @@ export async function countRecentByIp(db, ipHash, now = Date.now()) {
 }
 
 /**
- * Insert a comment in the pending state. Returns the generated id.
+ * Insert a comment. Returns the generated id and the status it landed in.
+ *
+ * `status` defaults to pending. Callers pass STATUS_APPROVED only when
+ * auto-approval is enabled for a verified identity.
  */
-export async function insertComment(db, { slug, name, email, body, ipHash, userAgent }, deps = {}) {
+export async function insertComment(
+  db,
+  {
+    slug,
+    name,
+    email,
+    body,
+    ipHash,
+    userAgent,
+    provider = PROVIDER_ANONYMOUS,
+    providerSub = null,
+    avatarUrl = null,
+    status = STATUS_PENDING,
+  },
+  deps = {}
+) {
   const id = (deps.randomUUID ?? (() => globalThis.crypto.randomUUID()))();
   const createdAt = (deps.now ?? (() => new Date().toISOString()))();
 
   await db
     .prepare(
       `INSERT INTO comments
-         (id, post_slug, author_name, author_email, body, status, created_at, ip_hash, user_agent)
-       VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9)`
+         (id, post_slug, author_name, author_email, body, status, created_at,
+          ip_hash, user_agent, auth_provider, provider_sub, avatar_url)
+       VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12)`
     )
     .bind(
       id,
@@ -186,32 +221,34 @@ export async function insertComment(db, { slug, name, email, body, ipHash, userA
       name,
       email,
       body,
-      STATUS_PENDING,
+      status,
       createdAt,
       ipHash,
-      (userAgent ?? '').slice(0, 300)
+      (userAgent ?? '').slice(0, 300),
+      provider,
+      providerSub,
+      avatarUrl
     )
     .run();
 
-  return { id, createdAt };
+  return { id, createdAt, status };
 }
 
 /** Admin listing. `status` of 'all' returns every comment, newest first. */
 export async function listForAdmin(db, status = STATUS_PENDING, limit = 200) {
   const capped = Math.min(Math.max(Number(limit) || 200, 1), 500);
 
+  const columns = `id, post_slug, author_name, author_email, body, status, created_at,
+                   auth_provider, avatar_url`;
+
   const stmt =
     status === 'all'
       ? db
-          .prepare(
-            `SELECT id, post_slug, author_name, author_email, body, status, created_at
-             FROM comments ORDER BY created_at DESC LIMIT ?1`
-          )
+          .prepare(`SELECT ${columns} FROM comments ORDER BY created_at DESC LIMIT ?1`)
           .bind(capped)
       : db
           .prepare(
-            `SELECT id, post_slug, author_name, author_email, body, status, created_at
-             FROM comments WHERE status = ?1 ORDER BY created_at DESC LIMIT ?2`
+            `SELECT ${columns} FROM comments WHERE status = ?1 ORDER BY created_at DESC LIMIT ?2`
           )
           .bind(status, capped);
 
@@ -224,6 +261,8 @@ export async function listForAdmin(db, status = STATUS_PENDING, limit = 200) {
     body: row.body,
     status: row.status,
     createdAt: row.created_at,
+    provider: row.auth_provider ?? PROVIDER_ANONYMOUS,
+    avatar: row.avatar_url ?? null,
   }));
 }
 

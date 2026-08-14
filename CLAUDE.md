@@ -79,8 +79,23 @@ Every post page carries a comment thread, including drafts. Comments are stored 
 served by Pages Functions, and held in a moderation queue until approved at `/admin/comments`.
 See `docs/COMMENTS.md`.
 
-The core logic lives in `site/functions/_lib/comments.js` and is unit tested. When changing it,
-update `site/tests/` in the same commit.
+**Commenting requires Google sign-in.** Identity comes only from the verified Google ID token;
+any name or email in the request body is ignored, so nobody can post under another name. Two
+`[vars]` in `site/wrangler.toml` control the policy without code changes:
+
+- `ALLOW_ANONYMOUS` (default `"false"`) also accepts anonymous comments, which then require a
+  name and must pass Turnstile. Keep the `PUBLIC_ALLOW_ANONYMOUS` build variable in sync so the
+  form renders the matching fields.
+- `AUTO_APPROVE_VERIFIED` (default `"false"`) publishes Google comments without review.
+
+Google's script loads on click, not on page load, so readers who never comment get no
+third-party code.
+
+The core logic lives in `site/functions/_lib/comments.js` and `site/functions/_lib/google.js`,
+both unit tested. When changing either, update `site/tests/` in the same commit.
+
+Schema changes go in `site/migrations/` as a numbered file, and into `site/schema.sql` for
+fresh databases.
 
 This code is shared verbatim with the asymptronix repo. A fix in one belongs in the other.
 

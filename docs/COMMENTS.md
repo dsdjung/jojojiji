@@ -1,7 +1,29 @@
 # Comments
 
-Reader comments, self-hosted on Cloudflare. No third-party service, no per-site fee, and no
-account required to comment.
+Reader comments, self-hosted on Cloudflare. No third-party comment service and no per-site fee.
+
+## Who can comment
+
+Commenters identify themselves with Google. This is controlled by two settings, so the policy
+can change without touching code:
+
+| Setting | Default | Effect |
+|---|---|---|
+| `ALLOW_ANONYMOUS` | `"false"` | When `"true"`, also accepts anonymous comments (name required, Turnstile enforced) |
+| `AUTO_APPROVE_VERIFIED` | `"false"` | When `"true"`, Google comments publish immediately instead of queueing |
+
+Both live in `[vars]` in `site/wrangler.toml`. The front end reads the matching
+`PUBLIC_ALLOW_ANONYMOUS` build variable so the form renders the right fields; keep the two in
+sync.
+
+Identity for a signed-in commenter comes **only** from the verified Google token. Any `name` or
+`email` in the request body is ignored, so a signed-in commenter cannot post under someone
+else's name.
+
+Google's script is loaded **on click**, not on page load, so readers who never comment get no
+third-party code at all. Clicking renders Google's official button and fires the One Tap prompt;
+if the prompt is suppressed (cooldown, or a browser without FedCM), the rendered button is there
+as a fallback.
 
 ## How it works
 
@@ -27,6 +49,7 @@ Nothing a commenter writes appears on the site until it is approved.
 
 | Path | Role |
 |---|---|
+| `site/functions/_lib/google.js` | Google ID token verification: JWKS fetch with caching, RS256 signature check, issuer/audience/expiry validation. |
 | `site/functions/_lib/comments.js` | All validation, D1 queries, and helpers. Pure and unit tested. |
 | `site/functions/api/comments.js` | Public endpoint: `GET` approved comments, `POST` a new one. |
 | `site/functions/api/admin/comments.js` | Moderation endpoint, bearer-token protected. |
@@ -34,6 +57,32 @@ Nothing a commenter writes appears on the site until it is approved.
 | `site/src/pages/admin/comments.astro` | Moderation queue UI at `/admin/comments`. |
 | `site/schema.sql` | D1 table and indexes. |
 | `site/tests/` | Vitest suite covering the core logic and both endpoints. |
+
+## Google sign-in setup
+
+In the [Google Cloud Console](https://console.cloud.google.com/):
+
+1. **Create or pick a project.** The OAuth consent screen is per project, and its app name is
+   what readers see in the sign-in dialog. Use one project per site if you want each to show its
+   own name; one project for both is fine if you do not care.
+2. **APIs & Services → OAuth consent screen.** User type **External**. Fill in app name, support
+   email, and developer contact. Scopes stay default (`email`, `profile`, `openid`) — these are
+   non-sensitive, so no Google verification review is required.
+3. **Publish the consent screen.** This matters: while it is in *Testing*, only accounts you list
+   as test users can sign in. Everyone else gets an error. Click **Publish app**.
+4. **Credentials → Create Credentials → OAuth client ID → Web application.**
+5. **Authorized JavaScript origins** — add every origin the button will load from:
+   ```
+   https://jojojiji.com
+   https://www.jojojiji.com
+   http://localhost:14024
+   ```
+   No redirect URIs are needed; the button uses a popup and posts the token back.
+6. Copy the **Client ID** (`....apps.googleusercontent.com`) into:
+   - `GOOGLE_CLIENT_ID` in `[vars]` in `site/wrangler.toml` (server-side verification)
+   - `PUBLIC_GOOGLE_CLIENT_ID` as a GitHub Actions **variable** (build-time, renders the button)
+
+   Both must be the same value. There is no client secret in this flow.
 
 ## Setup
 
@@ -95,8 +144,11 @@ not from being unlisted.
 
 | Layer | What it stops |
 |---|---|
-| Moderation queue | Everything. Nothing is public until approved. |
-| Cloudflare Turnstile | Automated submissions. |
+| Google sign-in required | Drive-by spam entirely. Posting needs a real Google account. |
+| Signature verification | Forged or replayed tokens. Checks RS256 signature against Google's keys, plus issuer, audience, and expiry. |
+| Identity from token only | Impersonation. A name in the request body is ignored when signed in. |
+| Moderation queue | Everything else. Nothing is public until approved. |
+| Cloudflare Turnstile | Automated submissions, on the anonymous path only. |
 | Honeypot field | Naive form-filling bots. Rejected without explanation. |
 | Rate limit | 5 comments per hashed IP per hour. |
 | Length and format validation | Oversized payloads, malformed slugs and emails. |
@@ -112,16 +164,37 @@ Raw IPs are never stored, only a salted SHA-256 hash.
 ### `GET /api/comments?post=<slug>`
 
 ```json
-{ "comments": [{ "id": "...", "name": "...", "body": "...", "createdAt": "2026-08-14T..." }] }
+{
+  "comments": [
+    {
+      "id": "...",
+      "name": "...",
+      "body": "...",
+      "createdAt": "2026-08-14T...",
+      "provider": "google",
+      "avatar": "https://lh3.googleusercontent.com/..."
+    }
+  ]
+}
 ```
 
 ### `POST /api/comments`
+
+Signed in with Google (the default policy):
+
+```json
+{ "post": "slug", "body": "...", "googleCredential": "<ID token from Google>" }
+```
+
+Anonymous, only when `ALLOW_ANONYMOUS` is `"true"`:
 
 ```json
 { "post": "slug", "name": "...", "email": "optional", "body": "...", "turnstileToken": "..." }
 ```
 
-`201` on success. `400` invalid, `403` failed verification, `429` rate limited.
+`201` on success, with `{ "ok": true, "status": "pending" | "approved" }`.
+`400` invalid, `401` not signed in or bad credential, `403` failed Turnstile,
+`429` rate limited.
 
 ### `GET /api/admin/comments?status=pending|approved|rejected|all`
 

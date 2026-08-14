@@ -56,6 +56,8 @@
         body: string;
         status: string;
         createdAt: string;
+        provider?: string;
+        avatar?: string | null;
       }
 
       const STORAGE_KEY = 'moderation-token';
@@ -114,7 +116,27 @@
 
           const meta = document.createElement('div');
           meta.className = 'admin-comment-meta';
-          meta.textContent = `${c.name}${c.email ? ` <${c.email}>` : ''} · ${c.post} · ${formatDate(c.createdAt)} · ${c.status}`;
+
+          if (c.avatar) {
+            const img = document.createElement('img');
+            img.className = 'admin-avatar';
+            img.src = c.avatar;
+            img.alt = '';
+            img.width = 20;
+            img.height = 20;
+            img.referrerPolicy = 'no-referrer';
+            meta.append(img);
+          }
+
+          const badge = document.createElement('span');
+          const google = c.provider === 'google';
+          badge.className = `admin-badge ${google ? 'is-google' : 'is-anon'}`;
+          badge.textContent = google ? 'Google' : 'anonymous';
+          meta.append(badge);
+
+          const metaText = document.createElement('span');
+          metaText.textContent = `${c.name}${c.email ? ` <${c.email}>` : ''} · ${c.post} · ${formatDate(c.createdAt)} · ${c.status}`;
+          meta.append(metaText);
 
           const body = document.createElement('div');
           body.className = 'admin-comment-body';
@@ -287,10 +309,38 @@
       }
 
       .admin-comment-meta {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        flex-wrap: wrap;
         font-size: 0.75rem;
         color: #777;
         margin-bottom: 0.5rem;
         word-break: break-word;
+      }
+
+      .admin-avatar {
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+
+      .admin-badge {
+        display: inline-block;
+        padding: 0.05rem 0.4rem;
+        border-radius: 999px;
+        font-size: 0.68rem;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+      }
+
+      .admin-badge.is-google {
+        background: #e8f0fe;
+        color: #1967d2;
+      }
+
+      .admin-badge.is-anon {
+        background: #f1f1f1;
+        color: #666;
       }
 
       .admin-comment-body {

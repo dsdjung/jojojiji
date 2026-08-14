@@ -49,14 +49,19 @@ const validInput = {
   body: 'A thoughtful comment.',
 };
 
-describe('validateComment', () => {
+const ANON = { anonymous: true };
+
+describe('validateComment (anonymous mode)', () => {
   it('accepts a well formed comment and normalises it', () => {
-    const result = validateComment({
-      post: '  founding-essay ',
-      name: '  Reader  ',
-      email: '  Reader@Example.COM ',
-      body: '  A thoughtful comment.  ',
-    });
+    const result = validateComment(
+      {
+        post: '  founding-essay ',
+        name: '  Reader  ',
+        email: '  Reader@Example.COM ',
+        body: '  A thoughtful comment.  ',
+      },
+      ANON
+    );
 
     expect(result.ok).toBe(true);
     expect(result.value).toEqual({
@@ -68,52 +73,52 @@ describe('validateComment', () => {
   });
 
   it('treats a missing email as null rather than an error', () => {
-    const result = validateComment({ ...validInput, email: '' });
+    const result = validateComment({ ...validInput, email: '' }, ANON);
     expect(result.ok).toBe(true);
     expect(result.value.email).toBeNull();
   });
 
   it('rejects a non-object body', () => {
-    expect(validateComment(null).ok).toBe(false);
-    expect(validateComment('nope').ok).toBe(false);
+    expect(validateComment(null, ANON).ok).toBe(false);
+    expect(validateComment('nope', ANON).ok).toBe(false);
   });
 
   it('rejects a filled honeypot without revealing why', () => {
-    const result = validateComment({ ...validInput, website: 'http://spam.example' });
+    const result = validateComment({ ...validInput, website: 'http://spam.example' }, ANON);
     expect(result.ok).toBe(false);
     expect(result.errors).toEqual(['Rejected.']);
   });
 
   it('ignores an empty honeypot', () => {
-    expect(validateComment({ ...validInput, website: '   ' }).ok).toBe(true);
+    expect(validateComment({ ...validInput, website: '   ' }, ANON).ok).toBe(true);
   });
 
   it('requires a name', () => {
-    const result = validateComment({ ...validInput, name: '   ' });
+    const result = validateComment({ ...validInput, name: '   ' }, ANON);
     expect(result.ok).toBe(false);
     expect(result.errors).toContain('Name is required.');
   });
 
   it('rejects an over-long name', () => {
-    const result = validateComment({ ...validInput, name: 'x'.repeat(81) });
+    const result = validateComment({ ...validInput, name: 'x'.repeat(81) }, ANON);
     expect(result.ok).toBe(false);
     expect(result.errors.join(' ')).toMatch(/80 characters or fewer/);
   });
 
   it('requires a comment body of at least two characters', () => {
-    const result = validateComment({ ...validInput, body: 'a' });
+    const result = validateComment({ ...validInput, body: 'a' }, ANON);
     expect(result.ok).toBe(false);
     expect(result.errors).toContain('Comment is required.');
   });
 
   it('rejects an over-long body', () => {
-    const result = validateComment({ ...validInput, body: 'x'.repeat(5001) });
+    const result = validateComment({ ...validInput, body: 'x'.repeat(5001) }, ANON);
     expect(result.ok).toBe(false);
     expect(result.errors.join(' ')).toMatch(/5000 characters or fewer/);
   });
 
   it('rejects a malformed email', () => {
-    const result = validateComment({ ...validInput, email: 'not-an-email' });
+    const result = validateComment({ ...validInput, email: 'not-an-email' }, ANON);
     expect(result.ok).toBe(false);
     expect(result.errors).toContain('Email address is not valid.');
   });
@@ -126,19 +131,56 @@ describe('validateComment', () => {
     ['leading slash', '/founding-essay'],
     ['too long', 'a'.repeat(201)],
   ])('rejects a %s post slug', (_label, post) => {
-    const result = validateComment({ ...validInput, post });
+    const result = validateComment({ ...validInput, post }, ANON);
     expect(result.ok).toBe(false);
     expect(result.errors).toContain('Missing or invalid post reference.');
   });
 
   it('accepts a nested slug', () => {
-    expect(validateComment({ ...validInput, post: 'notes/2026/why-i-write' }).ok).toBe(true);
+    expect(validateComment({ ...validInput, post: 'notes/2026/why-i-write' }, ANON).ok).toBe(true);
   });
 
   it('collects every error at once', () => {
-    const result = validateComment({ post: '', name: '', body: '', email: 'bad' });
+    const result = validateComment({ post: '', name: '', body: '', email: 'bad' }, ANON);
     expect(result.ok).toBe(false);
     expect(result.errors.length).toBe(4);
+  });
+});
+
+describe('validateComment (authenticated mode)', () => {
+  it('does not require a name, since identity comes from the token', () => {
+    const result = validateComment({ post: 'founding-essay', body: 'Signed in comment.' });
+    expect(result.ok).toBe(true);
+    expect(result.value.name).toBeNull();
+    expect(result.value.email).toBeNull();
+  });
+
+  it('ignores any name or email supplied in the body, so nobody can impersonate', () => {
+    const result = validateComment({
+      post: 'founding-essay',
+      body: 'Signed in comment.',
+      name: 'Someone Else',
+      email: 'attacker@example.com',
+    });
+
+    expect(result.ok).toBe(true);
+    expect(result.value.name).toBeNull();
+    expect(result.value.email).toBeNull();
+  });
+
+  it('still enforces the honeypot', () => {
+    const result = validateComment({
+      post: 'founding-essay',
+      body: 'text',
+      website: 'http://spam.example',
+    });
+    expect(result.ok).toBe(false);
+  });
+
+  it('still enforces slug and body rules', () => {
+    expect(validateComment({ post: '../evil', body: 'text' }).ok).toBe(false);
+    expect(validateComment({ post: 'ok-slug', body: 'a' }).ok).toBe(false);
+    expect(validateComment({ post: 'ok-slug', body: 'x'.repeat(5001) }).ok).toBe(false);
   });
 });
 
@@ -241,7 +283,14 @@ describe('listApproved', () => {
     const db = fakeDb({
       all: {
         results: [
-          { id: '1', author_name: 'A', body: 'hello', created_at: '2026-08-01T00:00:00.000Z' },
+          {
+            id: '1',
+            author_name: 'A',
+            body: 'hello',
+            created_at: '2026-08-01T00:00:00.000Z',
+            auth_provider: 'google',
+            avatar_url: 'https://lh3.googleusercontent.com/a/x',
+          },
         ],
       },
     });
@@ -251,8 +300,30 @@ describe('listApproved', () => {
     expect(db.calls[0].params).toEqual(['founding-essay', STATUS_APPROVED]);
     expect(db.calls[0].sql).toMatch(/ORDER BY created_at ASC/);
     expect(comments).toEqual([
-      { id: '1', name: 'A', body: 'hello', createdAt: '2026-08-01T00:00:00.000Z' },
+      {
+        id: '1',
+        name: 'A',
+        body: 'hello',
+        createdAt: '2026-08-01T00:00:00.000Z',
+        provider: 'google',
+        avatar: 'https://lh3.googleusercontent.com/a/x',
+      },
     ]);
+  });
+
+  it('defaults legacy rows with no provider to anonymous', async () => {
+    const db = fakeDb({
+      all: { results: [{ id: '1', author_name: 'A', body: 'b', created_at: 't' }] },
+    });
+    const [comment] = await listApproved(db, 'x');
+    expect(comment.provider).toBe('anonymous');
+    expect(comment.avatar).toBeNull();
+  });
+
+  it('never exposes the provider subject ID publicly', async () => {
+    const db = fakeDb();
+    await listApproved(db, 'x');
+    expect(db.calls[0].sql).not.toMatch(/provider_sub/);
   });
 
   it('never exposes the commenter email or IP hash', async () => {
@@ -302,7 +373,11 @@ describe('insertComment', () => {
       { randomUUID: () => 'fixed-id', now: () => '2026-08-14T00:00:00.000Z' }
     );
 
-    expect(result).toEqual({ id: 'fixed-id', createdAt: '2026-08-14T00:00:00.000Z' });
+    expect(result).toEqual({
+      id: 'fixed-id',
+      createdAt: '2026-08-14T00:00:00.000Z',
+      status: STATUS_PENDING,
+    });
     expect(db.calls[0].params).toEqual([
       'fixed-id',
       'founding-essay',
@@ -313,7 +388,47 @@ describe('insertComment', () => {
       '2026-08-14T00:00:00.000Z',
       'h',
       'UA',
+      'anonymous',
+      null,
+      null,
     ]);
+  });
+
+  it('records the Google identity when one is supplied', async () => {
+    const db = fakeDb();
+    const result = await insertComment(
+      db,
+      {
+        slug: 'founding-essay',
+        name: 'Test Reader',
+        email: 'reader@example.com',
+        body: 'hi',
+        ipHash: 'h',
+        provider: 'google',
+        providerSub: '110169484474386276334',
+        avatarUrl: 'https://lh3.googleusercontent.com/a/x',
+      },
+      { randomUUID: () => 'id', now: () => 'now' }
+    );
+
+    expect(result.status).toBe(STATUS_PENDING);
+    expect(db.calls[0].params.slice(9)).toEqual([
+      'google',
+      '110169484474386276334',
+      'https://lh3.googleusercontent.com/a/x',
+    ]);
+  });
+
+  it('can insert straight to approved when auto-approval is on', async () => {
+    const db = fakeDb();
+    const result = await insertComment(
+      db,
+      { slug: 's', name: 'A', email: null, body: 'hi', ipHash: null, status: STATUS_APPROVED },
+      { randomUUID: () => 'id', now: () => 'now' }
+    );
+
+    expect(result.status).toBe(STATUS_APPROVED);
+    expect(db.calls[0].params[5]).toBe(STATUS_APPROVED);
   });
 
   it('truncates an over-long user agent', async () => {
@@ -375,6 +490,8 @@ describe('listForAdmin', () => {
             body: 'b',
             status: 'pending',
             created_at: 't',
+            auth_provider: 'google',
+            avatar_url: 'https://lh3.googleusercontent.com/a/x',
           },
         ],
       },
@@ -388,6 +505,8 @@ describe('listForAdmin', () => {
         body: 'b',
         status: 'pending',
         createdAt: 't',
+        provider: 'google',
+        avatar: 'https://lh3.googleusercontent.com/a/x',
       },
     ]);
   });

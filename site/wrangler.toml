@@ -17,3 +17,15 @@ pages_build_output_dir = "dist"
 binding = "COMMENTS_DB"
 database_name = "jojojiji-comments"
 database_id = "75671fc8-33d9-4b12-bdc0-6f725c41256b"
+
+# Plain (non-secret) runtime variables. The Google client ID is public by design:
+# it is embedded in the page HTML for the sign-in button.
+[vars]
+# Require Google sign-in to comment. Set to "true" to also accept anonymous
+# comments (which then require a name and must pass Turnstile).
+ALLOW_ANONYMOUS = "false"
+# Publish Google-verified comments without review. Leave "false" to moderate everything.
+AUTO_APPROVE_VERIFIED = "false"
+# From Google Cloud Console -> Credentials -> OAuth 2.0 Client ID (Web application).
+# Must match the PUBLIC_GOOGLE_CLIENT_ID repository variable used at build time.
+GOOGLE_CLIENT_ID = ""

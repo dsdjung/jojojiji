@@ -45,7 +45,13 @@ const validBody = {
 };
 
 // No Turnstile secret in these tests, so verification is skipped.
-const baseEnv = () => ({ COMMENTS_DB: fakeDb(), IP_HASH_SALT: 'salt' });
+// ALLOW_ANONYMOUS is on here so the anonymous path stays exercised; the
+// Google-only default is covered in its own describe block below.
+const baseEnv = () => ({
+  COMMENTS_DB: fakeDb(),
+  IP_HASH_SALT: 'salt',
+  ALLOW_ANONYMOUS: 'true',
+});
 
 describe('GET /api/comments', () => {
   it('returns approved comments for a post', async () => {
@@ -53,7 +59,16 @@ describe('GET /api/comments', () => {
       ...baseEnv(),
       COMMENTS_DB: fakeDb({
         all: {
-          results: [{ id: '1', author_name: 'A', body: 'hi', created_at: '2026-08-01T00:00:00Z' }],
+          results: [
+            {
+              id: '1',
+              author_name: 'A',
+              body: 'hi',
+              created_at: '2026-08-01T00:00:00Z',
+              auth_provider: 'google',
+              avatar_url: 'https://lh3.googleusercontent.com/a/x',
+            },
+          ],
         },
       }),
     };
@@ -61,7 +76,16 @@ describe('GET /api/comments', () => {
 
     expect(res.status).toBe(200);
     await expect(res.json()).resolves.toEqual({
-      comments: [{ id: '1', name: 'A', body: 'hi', createdAt: '2026-08-01T00:00:00Z' }],
+      comments: [
+        {
+          id: '1',
+          name: 'A',
+          body: 'hi',
+          createdAt: '2026-08-01T00:00:00Z',
+          provider: 'google',
+          avatar: 'https://lh3.googleusercontent.com/a/x',
+        },
+      ],
     });
   });
 
@@ -177,6 +201,63 @@ describe('POST /api/comments', () => {
 
     expect(res.status).toBe(500);
     await expect(res.json()).resolves.toEqual({ error: 'Could not save your comment.' });
+  });
+});
+
+describe('POST /api/comments identity policy', () => {
+  const GOOGLE_CLIENT_ID = 'client-id.apps.googleusercontent.com';
+
+  /** Env with Google required (the default: ALLOW_ANONYMOUS unset). */
+  const googleOnlyEnv = (over = {}) => ({
+    COMMENTS_DB: fakeDb(),
+    IP_HASH_SALT: 'salt',
+    GOOGLE_CLIENT_ID,
+    ...over,
+  });
+
+  it('401s an anonymous post when anonymous is not allowed', async () => {
+    const env = googleOnlyEnv();
+    const res = await publicPost({ request: postReq(validBody), env });
+
+    expect(res.status).toBe(401);
+    await expect(res.json()).resolves.toEqual({ error: 'Please sign in with Google to comment.' });
+    expect(env.COMMENTS_DB.calls.some((c) => c.sql.startsWith('INSERT'))).toBe(false);
+  });
+
+  it.each([
+    ['false', 'false'],
+    ['unset', undefined],
+    ['nonsense', 'yes-please'],
+  ])('treats ALLOW_ANONYMOUS=%s as off', async (_label, value) => {
+    const env = googleOnlyEnv({ ALLOW_ANONYMOUS: value });
+    const res = await publicPost({ request: postReq(validBody), env });
+    expect(res.status).toBe(401);
+  });
+
+  it('401s a bad Google credential without touching the database', async () => {
+    const env = googleOnlyEnv();
+    const res = await publicPost({
+      request: postReq({ ...validBody, googleCredential: 'not-a-real-jwt' }),
+      env,
+    });
+
+    expect(res.status).toBe(401);
+    expect(env.COMMENTS_DB.calls.some((c) => c.sql.startsWith('INSERT'))).toBe(false);
+  });
+
+  it('503s when a credential is sent but no client ID is configured', async () => {
+    const env = googleOnlyEnv({ GOOGLE_CLIENT_ID: undefined });
+    const res = await publicPost({
+      request: postReq({ ...validBody, googleCredential: 'anything' }),
+      env,
+    });
+    expect(res.status).toBe(503);
+  });
+
+  it('lets an anonymous post through once ALLOW_ANONYMOUS is on', async () => {
+    const env = googleOnlyEnv({ ALLOW_ANONYMOUS: 'true' });
+    const res = await publicPost({ request: postReq(validBody), env });
+    expect(res.status).toBe(201);
   });
 });
 

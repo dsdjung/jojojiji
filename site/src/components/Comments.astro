@@ -4,6 +4,10 @@
  *
  * The page stays fully static: comments are fetched client side after load, so
  * the HTML is still cached at the edge.
+ *
+ * Commenters identify themselves with Google. Google's script is loaded only
+ * when someone clicks "Sign in with Google", so readers who never comment get
+ * no third-party code at all.
  */
 
 interface Props {
@@ -16,60 +20,97 @@ interface Props {
 const { post, heading = 'Comments' } = Astro.props;
 
 const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
+const googleClientId = import.meta.env.PUBLIC_GOOGLE_CLIENT_ID ?? '';
+// Keep in sync with the ALLOW_ANONYMOUS binding on the Pages project.
+const allowAnonymous = (import.meta.env.PUBLIC_ALLOW_ANONYMOUS ?? '') === 'true';
 ---
 
-<section class="comments" data-post={post} data-turnstile-key={turnstileSiteKey}>
+<section
+  class="comments"
+  data-post={post}
+  data-turnstile-key={turnstileSiteKey}
+  data-google-client-id={googleClientId}
+  data-allow-anonymous={allowAnonymous ? 'true' : 'false'}
+>
   <h3>{heading}</h3>
 
   <div class="comments-list" data-comments-list>
     <p class="comments-status" data-comments-status>Loading comments…</p>
   </div>
 
-  <form class="comment-form" data-comment-form novalidate>
-    <p class="comment-form-intro">
-      Comments are reviewed before they appear. Your email is never published and is only
-      used if a reply is needed.
-    </p>
+  {googleClientId === '' && !allowAnonymous ? (
+    <p class="comments-status">Commenting is not available yet.</p>
+  ) : (
+    <div class="comment-compose">
+      {/* Signed out: prompt to authenticate. */}
+      <div class="comment-signin" data-signin hidden>
+        <p class="comment-form-intro">
+          Sign in with Google to comment. Your name and picture come from your Google
+          account. Your email is never published.
+        </p>
+        <button type="button" class="google-btn" data-google-signin>
+          <svg viewBox="0 0 18 18" width="18" height="18" aria-hidden="true">
+            <path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 0 1-1.8 2.72v2.26h2.91c1.7-1.57 2.69-3.88 2.69-6.62z"/>
+            <path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.91-2.26c-.81.54-1.84.86-3.05.86-2.35 0-4.34-1.58-5.05-3.71H.96v2.33A9 9 0 0 0 9 18z"/>
+            <path fill="#FBBC05" d="M3.95 10.71a5.41 5.41 0 0 1 0-3.42V4.96H.96a9 9 0 0 0 0 8.08l2.99-2.33z"/>
+            <path fill="#EA4335" d="M9 3.58c1.32 0 2.51.45 3.44 1.35l2.58-2.58C13.46.89 11.43 0 9 0A9 9 0 0 0 .96 4.96l2.99 2.33C4.66 5.16 6.65 3.58 9 3.58z"/>
+          </svg>
+          <span>Sign in with Google</span>
+        </button>
+        {/* Google's own rendered button. Replaces ours once its script has loaded,
+            since the official button is the only flow guaranteed to work in every
+            browser (One Tap can be suppressed by cooldown or blocked by FedCM). */}
+        <div data-google-button hidden></div>
+        <p class="comment-message" data-signin-message role="status" aria-live="polite"></p>
+      </div>
 
-    <label class="comment-field">
-      <span>Name</span>
-      <input type="text" name="name" maxlength="80" required autocomplete="name" />
-    </label>
+      {/* Signed in: show who, and let them sign out. */}
+      <div class="comment-identity" data-identity hidden>
+        <img class="comment-avatar" data-identity-avatar alt="" width="32" height="32" />
+        <span class="comment-identity-name" data-identity-name></span>
+        <button type="button" class="link-btn" data-signout>Sign out</button>
+      </div>
 
-    <label class="comment-field">
-      <span>Email <em>(optional, not published)</em></span>
-      <input type="email" name="email" maxlength="254" autocomplete="email" />
-    </label>
+      <form class="comment-form" data-comment-form novalidate hidden>
+        <p class="comment-form-intro" data-form-intro>
+          Comments are reviewed before they appear.
+        </p>
 
-    <label class="comment-field">
-      <span>Comment</span>
-      <textarea name="body" rows="5" maxlength="5000" required></textarea>
-    </label>
+        {/* Anonymous-only fields. Hidden entirely when Google is required. */}
+        <div data-anon-fields hidden>
+          <label class="comment-field">
+            <span>Name</span>
+            <input type="text" name="name" maxlength="80" autocomplete="name" />
+          </label>
 
-    {/* Honeypot. Hidden from people, tempting to bots. */}
-    <div class="comment-hp" aria-hidden="true">
-      <label>
-        Website
-        <input type="text" name="website" tabindex="-1" autocomplete="off" />
-      </label>
+          <label class="comment-field">
+            <span>Email <em>(optional, not published)</em></span>
+            <input type="email" name="email" maxlength="254" autocomplete="email" />
+          </label>
+        </div>
+
+        <label class="comment-field">
+          <span>Comment</span>
+          <textarea name="body" rows="5" maxlength="5000" required></textarea>
+        </label>
+
+        {/* Honeypot. Hidden from people, tempting to bots. */}
+        <div class="comment-hp" aria-hidden="true">
+          <label>
+            Website
+            <input type="text" name="website" tabindex="-1" autocomplete="off" />
+          </label>
+        </div>
+
+        {turnstileSiteKey && <div class="cf-turnstile" data-turnstile-mount hidden></div>}
+
+        <button type="submit" data-comment-submit>Post comment</button>
+
+        <p class="comment-message" data-comment-message role="status" aria-live="polite"></p>
+      </form>
     </div>
-
-    {turnstileSiteKey && <div class="cf-turnstile" data-turnstile-mount></div>}
-
-    <button type="submit" data-comment-submit>Post comment</button>
-
-    <p class="comment-message" data-comment-message role="status" aria-live="polite"></p>
-  </form>
+  )}
 </section>
-
-{turnstileSiteKey && (
-  <script
-    is:inline
-    async
-    defer
-    src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
-  ></script>
-)}
 
 <script>
   interface CommentRecord {
@@ -77,6 +118,14 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
     name: string;
     body: string;
     createdAt: string;
+    provider?: string;
+    avatar?: string | null;
+  }
+
+  interface GoogleProfile {
+    credential: string;
+    name: string;
+    picture: string | null;
   }
 
   declare global {
@@ -86,22 +135,78 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
         reset: (id?: string) => void;
         getResponse: (id?: string) => string | undefined;
       };
+      google?: any;
+    }
+  }
+
+  const GOOGLE_SCRIPT = 'https://accounts.google.com/gsi/client';
+  const TURNSTILE_SCRIPT = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+
+  /** Load a third-party script once, on demand. */
+  const loadScript = (() => {
+    const loaded = new Map<string, Promise<void>>();
+    return (src: string) => {
+      let existing = loaded.get(src);
+      if (!existing) {
+        existing = new Promise<void>((resolve, reject) => {
+          const el = document.createElement('script');
+          el.src = src;
+          el.async = true;
+          el.defer = true;
+          el.onload = () => resolve();
+          el.onerror = () => reject(new Error(`Failed to load ${src}`));
+          document.head.append(el);
+        });
+        loaded.set(src, existing);
+      }
+      return existing;
+    };
+  })();
+
+  /**
+   * Decode a JWT payload for display only. The server does the real verification,
+   * so nothing here is trusted for authorisation.
+   *
+   * Decodes through TextDecoder rather than atob alone, so names with non-ASCII
+   * characters survive intact.
+   */
+  function readIdTokenClaims(token: string): { name?: string; picture?: string; exp?: number } {
+    try {
+      const b64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+      const binary = atob(b64 + '='.repeat((4 - (b64.length % 4)) % 4));
+      const bytes = Uint8Array.from(binary, (c) => c.charCodeAt(0));
+      return JSON.parse(new TextDecoder().decode(bytes));
+    } catch {
+      return {};
     }
   }
 
   function initComments(root: HTMLElement) {
     const post = root.dataset.post ?? '';
     const turnstileKey = root.dataset.turnstileKey ?? '';
+    const googleClientId = root.dataset.googleClientId ?? '';
+    const allowAnonymous = root.dataset.allowAnonymous === 'true';
 
     const list = root.querySelector<HTMLElement>('[data-comments-list]');
     const status = root.querySelector<HTMLElement>('[data-comments-status]');
+    if (!list || !status) return;
+
     const form = root.querySelector<HTMLFormElement>('[data-comment-form]');
     const message = root.querySelector<HTMLElement>('[data-comment-message]');
     const submit = root.querySelector<HTMLButtonElement>('[data-comment-submit]');
     const turnstileMount = root.querySelector<HTMLElement>('[data-turnstile-mount]');
+    const signinPanel = root.querySelector<HTMLElement>('[data-signin]');
+    const signinBtn = root.querySelector<HTMLButtonElement>('[data-google-signin]');
+    const googleButtonMount = root.querySelector<HTMLElement>('[data-google-button]');
+    const signinMessage = root.querySelector<HTMLElement>('[data-signin-message]');
+    const identityPanel = root.querySelector<HTMLElement>('[data-identity]');
+    const identityName = root.querySelector<HTMLElement>('[data-identity-name]');
+    const identityAvatar = root.querySelector<HTMLImageElement>('[data-identity-avatar]');
+    const signoutBtn = root.querySelector<HTMLButtonElement>('[data-signout]');
+    const anonFields = root.querySelector<HTMLElement>('[data-anon-fields]');
+    const formIntro = root.querySelector<HTMLElement>('[data-form-intro]');
 
-    if (!list || !status || !form || !message || !submit) return;
-
+    let profile: GoogleProfile | null = null;
     let turnstileWidgetId: string | undefined;
 
     const formatDate = (iso: string) => {
@@ -129,6 +234,18 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
 
         const meta = document.createElement('div');
         meta.className = 'comment-meta';
+
+        if (c.avatar) {
+          const img = document.createElement('img');
+          img.className = 'comment-avatar';
+          img.src = c.avatar;
+          img.alt = '';
+          img.width = 24;
+          img.height = 24;
+          img.loading = 'lazy';
+          img.referrerPolicy = 'no-referrer';
+          meta.append(img);
+        }
 
         const author = document.createElement('span');
         author.className = 'comment-author';
@@ -168,48 +285,177 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
       }
     };
 
-    const mountTurnstile = () => {
-      if (!turnstileKey || !turnstileMount || !window.turnstile) return;
-      turnstileWidgetId = window.turnstile.render(turnstileMount, {
-        sitekey: turnstileKey,
-        theme: 'light',
-      });
+    /** Reflect signed-in state across the compose area. */
+    const syncUi = () => {
+      const signedIn = profile !== null;
+      if (signinPanel) signinPanel.hidden = signedIn || (allowAnonymous && googleClientId === '');
+      if (identityPanel) identityPanel.hidden = !signedIn;
+      if (form) form.hidden = !signedIn && !allowAnonymous;
+      if (anonFields) anonFields.hidden = signedIn || !allowAnonymous;
+      if (turnstileMount) turnstileMount.hidden = signedIn;
+
+      if (signedIn && identityName && identityAvatar) {
+        identityName.textContent = profile!.name;
+        if (profile!.picture) {
+          identityAvatar.src = profile!.picture;
+          identityAvatar.hidden = false;
+          identityAvatar.referrerPolicy = 'no-referrer';
+        } else {
+          identityAvatar.hidden = true;
+        }
+      }
+
+      if (formIntro) {
+        formIntro.textContent = signedIn
+          ? `Commenting as ${profile!.name}. Comments are reviewed before they appear.`
+          : 'Comments are reviewed before they appear. Your email is never published.';
+      }
+
+      // Turnstile only guards anonymous posts.
+      if (!signedIn && allowAnonymous && turnstileKey && turnstileMount) {
+        void mountTurnstile();
+      }
     };
 
-    if (turnstileKey && turnstileMount) {
-      // The Turnstile script may land before or after this module runs.
-      if (window.turnstile) {
-        mountTurnstile();
-      } else {
-        const poll = window.setInterval(() => {
-          if (window.turnstile) {
-            window.clearInterval(poll);
-            mountTurnstile();
-          }
-        }, 200);
-        window.setTimeout(() => window.clearInterval(poll), 10000);
+    const mountTurnstile = async () => {
+      if (!turnstileKey || !turnstileMount || turnstileWidgetId !== undefined) return;
+      try {
+        await loadScript(TURNSTILE_SCRIPT);
+        // The API object appears a tick after the script loads.
+        for (let i = 0; i < 50 && !window.turnstile; i++) {
+          await new Promise((r) => setTimeout(r, 100));
+        }
+        if (!window.turnstile) return;
+        turnstileWidgetId = window.turnstile.render(turnstileMount, {
+          sitekey: turnstileKey,
+          theme: 'light',
+        });
+      } catch {
+        /* Non-fatal: the server still rejects unverified anonymous posts. */
       }
-    }
+    };
 
-    form.addEventListener('submit', async (event) => {
+    const setProfile = (credential: string) => {
+      const claims = readIdTokenClaims(credential);
+      profile = {
+        credential,
+        name: claims.name ?? 'Signed in',
+        picture: claims.picture ?? null,
+      };
+      // Session-scoped on purpose: the credential is short lived and we do not
+      // want it surviving a closed tab.
+      try {
+        sessionStorage.setItem(`comment-identity:${post}`, credential);
+      } catch {
+        /* Private browsing. Fine, they just re-auth. */
+      }
+      syncUi();
+    };
+
+    const clearProfile = () => {
+      profile = null;
+      try {
+        sessionStorage.removeItem(`comment-identity:${post}`);
+      } catch {
+        /* ignore */
+      }
+      syncUi();
+    };
+
+    /**
+     * Google's script is fetched here, on click, not on page load.
+     *
+     * Once loaded we both render Google's official button and fire the One Tap
+     * prompt. If the prompt appears the reader is done in one click; if it is
+     * suppressed, the rendered button is sitting right there.
+     */
+    const signIn = async () => {
+      if (!signinBtn || !signinMessage || !googleButtonMount) return;
+      signinBtn.disabled = true;
+      signinMessage.textContent = 'Contacting Google…';
+      signinMessage.classList.remove('is-error');
+
+      try {
+        await loadScript(GOOGLE_SCRIPT);
+        if (!window.google?.accounts?.id) throw new Error('Google unavailable');
+
+        window.google.accounts.id.initialize({
+          client_id: googleClientId,
+          callback: (response: { credential?: string }) => {
+            if (response?.credential) {
+              signinMessage.textContent = '';
+              setProfile(response.credential);
+            } else {
+              signinMessage.textContent = 'Sign-in did not complete.';
+              signinMessage.classList.add('is-error');
+            }
+          },
+          auto_select: false,
+          cancel_on_tap_outside: true,
+        });
+
+        window.google.accounts.id.renderButton(googleButtonMount, {
+          type: 'standard',
+          theme: 'outline',
+          size: 'large',
+          text: 'signin_with',
+        });
+
+        // Swap our placeholder for Google's real button.
+        signinBtn.hidden = true;
+        googleButtonMount.hidden = false;
+        signinMessage.textContent = '';
+
+        window.google.accounts.id.prompt();
+      } catch {
+        signinMessage.textContent = 'Could not reach Google. Please try again.';
+        signinMessage.classList.add('is-error');
+        signinBtn.disabled = false;
+      }
+    };
+
+    signinBtn?.addEventListener('click', () => void signIn());
+    signoutBtn?.addEventListener('click', clearProfile);
+
+    form?.addEventListener('submit', async (event) => {
       event.preventDefault();
+      if (!message || !submit) return;
       message.textContent = '';
       message.classList.remove('is-error', 'is-success');
 
       const data = new FormData(form);
-      const payload = {
-        post,
-        name: String(data.get('name') ?? ''),
-        email: String(data.get('email') ?? ''),
-        body: String(data.get('body') ?? ''),
-        website: String(data.get('website') ?? ''),
-        turnstileToken: turnstileKey ? (window.turnstile?.getResponse(turnstileWidgetId) ?? '') : '',
-      };
+      const body = String(data.get('body') ?? '');
 
-      if (payload.name.trim() === '' || payload.body.trim() === '') {
-        message.textContent = 'Please add your name and a comment.';
+      if (body.trim() === '') {
+        message.textContent = 'Please write a comment.';
         message.classList.add('is-error');
         return;
+      }
+      if (!profile && !allowAnonymous) {
+        message.textContent = 'Please sign in with Google to comment.';
+        message.classList.add('is-error');
+        return;
+      }
+
+      const payload: Record<string, string> = {
+        post,
+        body,
+        website: String(data.get('website') ?? ''),
+      };
+
+      if (profile) {
+        payload.googleCredential = profile.credential;
+      } else {
+        payload.name = String(data.get('name') ?? '');
+        payload.email = String(data.get('email') ?? '');
+        payload.turnstileToken = turnstileKey
+          ? (window.turnstile?.getResponse(turnstileWidgetId) ?? '')
+          : '';
+        if (payload.name.trim() === '') {
+          message.textContent = 'Please add your name.';
+          message.classList.add('is-error');
+          return;
+        }
       }
 
       submit.disabled = true;
@@ -221,15 +467,18 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
           headers: { 'content-type': 'application/json' },
           body: JSON.stringify(payload),
         });
-        const result = (await res.json()) as { message?: string; error?: string };
+        const result = (await res.json()) as { message?: string; error?: string; status?: string };
 
         if (res.ok) {
           form.reset();
           message.textContent = result.message ?? 'Thanks. Your comment is awaiting review.';
           message.classList.add('is-success');
+          if (result.status === 'approved') void load();
         } else {
           message.textContent = result.error ?? 'Something went wrong. Please try again.';
           message.classList.add('is-error');
+          // An expired credential is the common case: make them sign in again.
+          if (res.status === 401 && profile) clearProfile();
         }
       } catch {
         message.textContent = 'Something went wrong. Please try again.';
@@ -237,10 +486,23 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
       } finally {
         submit.disabled = false;
         submit.textContent = 'Post comment';
-        if (turnstileKey) window.turnstile?.reset(turnstileWidgetId);
+        if (!profile && turnstileKey) window.turnstile?.reset(turnstileWidgetId);
       }
     });
 
+    // Restore a session-scoped identity, unless the token already expired.
+    try {
+      const stored = sessionStorage.getItem(`comment-identity:${post}`);
+      if (stored) {
+        const claims = readIdTokenClaims(stored);
+        if (claims.exp && claims.exp * 1000 > Date.now()) setProfile(stored);
+        else sessionStorage.removeItem(`comment-identity:${post}`);
+      }
+    } catch {
+      /* ignore */
+    }
+
+    syncUi();
     void load();
   }
 
@@ -271,9 +533,17 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
   }
 
   .comment-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
     font-size: 0.8rem;
     color: var(--comments-muted, #888);
     margin-bottom: 0.35rem;
+  }
+
+  .comment-avatar {
+    border-radius: 50%;
+    flex-shrink: 0;
   }
 
   .comment-author {
@@ -290,7 +560,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
     margin-bottom: 0;
   }
 
-  .comment-form {
+  .comment-compose {
     margin-top: 2rem;
   }
 
@@ -298,6 +568,61 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
     font-size: 0.85rem;
     color: var(--comments-muted, #888);
     margin-bottom: 1rem;
+  }
+
+  /* Google button, following Google's identity guidelines closely enough to
+     stay recognisable while inheriting the site's type. */
+  .google-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: inherit;
+    font-size: 0.9rem;
+    padding: 0.55rem 1.1rem;
+    background: #fff;
+    color: #3c4043;
+    border: 1px solid #dadce0;
+    border-radius: var(--comments-radius, 4px);
+    cursor: pointer;
+    transition: background 0.15s, box-shadow 0.15s;
+  }
+
+  .google-btn:hover:not(:disabled) {
+    background: #f8f9fa;
+    box-shadow: 0 1px 2px rgba(60, 64, 67, 0.3);
+  }
+
+  .google-btn:disabled {
+    opacity: 0.6;
+    cursor: default;
+  }
+
+  .comment-identity {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+  }
+
+  .comment-identity-name {
+    font-weight: 700;
+    color: var(--comments-strong, #333);
+  }
+
+  .link-btn {
+    font-family: inherit;
+    font-size: 0.8rem;
+    background: none;
+    border: none;
+    padding: 0;
+    color: var(--comments-muted, #888);
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  .link-btn:hover {
+    color: var(--comments-strong, #333);
   }
 
   .comment-field {
@@ -351,7 +676,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
     overflow: hidden;
   }
 
-  .comment-form button {
+  .comment-form button[type='submit'] {
     font-family: inherit;
     font-size: 0.9rem;
     padding: 0.55rem 1.4rem;
@@ -363,11 +688,11 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
     transition: opacity 0.15s;
   }
 
-  .comment-form button:hover:not(:disabled) {
+  .comment-form button[type='submit']:hover:not(:disabled) {
     opacity: 0.85;
   }
 
-  .comment-form button:disabled {
+  .comment-form button[type='submit']:disabled {
     opacity: 0.5;
     cursor: default;
   }
