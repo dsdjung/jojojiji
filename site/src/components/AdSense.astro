@@ -1,0 +1,20 @@
+---
+/**
+ * Google AdSense loader. Belongs in <head>, once per page.
+ *
+ * Renders nothing until PUBLIC_ADSENSE_CLIENT is set, so the site stays
+ * script-free until the AdSense account is approved and the publisher ID is
+ * added to the Cloudflare Pages environment variables.
+ */
+
+const client = import.meta.env.PUBLIC_ADSENSE_CLIENT ?? '';
+---
+
+{client && (
+  <script
+    is:inline
+    async
+    src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${client}`}
+    crossorigin="anonymous"
+  ></script>
+)}

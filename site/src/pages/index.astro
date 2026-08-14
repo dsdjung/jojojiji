@@ -1,0 +1,57 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('posts');
+
+const published = posts
+  .filter((p) => p.data.published)
+  .sort((a, b) => (b.data.date ?? '').localeCompare(a.data.date ?? ''));
+---
+
+<Base title="jojojiji">
+  <div class="home-intro">
+    <h1>Things worth knowing</h1>
+    <p>
+      Written for my kids, and for anyone else who finds it useful. Notes on the things I wish
+      someone had explained to me earlier.
+    </p>
+  </div>
+
+  {published.length === 0 ? (
+    <p>Nothing published yet. Come back soon.</p>
+  ) : (
+    <ul class="post-list">
+      {published.map((post) => {
+        const formattedDate = post.data.date
+          ? new Date(post.data.date + 'T12:00:00').toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            })
+          : null;
+        return (
+          <li>
+            <a href={`/posts/${post.id}`}>
+              <div class="post-title">{post.data.title}</div>
+            </a>
+            {(formattedDate || post.data.tags.length > 0) && (
+              <div class="post-meta">
+                {formattedDate}
+                {formattedDate && post.data.tags.length > 0 && <span> &middot; </span>}
+                {post.data.tags.length > 0 && (
+                  <span class="post-tags">
+                    {post.data.tags.map((tag) => (
+                      <span class="post-tag">{tag}</span>
+                    ))}
+                  </span>
+                )}
+              </div>
+            )}
+            <div class="post-description">{post.data.description}</div>
+          </li>
+        );
+      })}
+    </ul>
+  )}
+</Base>

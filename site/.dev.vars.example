@@ -1,0 +1,8 @@
+# Copy to `.dev.vars` for local `wrangler pages dev`. Never commit `.dev.vars`.
+#
+# Leave TURNSTILE_SECRET_KEY empty locally to skip bot verification entirely,
+# which lets the comment form work without a Turnstile widget.
+
+TURNSTILE_SECRET_KEY=
+ADMIN_TOKEN=local-dev-token
+IP_HASH_SALT=local-dev-salt

@@ -1,0 +1,81 @@
+---
+import Base from './Base.astro';
+import AdUnit from '../components/AdUnit.astro';
+import Comments from '../components/Comments.astro';
+import YouTube from '../components/YouTube.astro';
+
+interface Props {
+  title: string;
+  date?: string;
+  published?: boolean;
+  description: string;
+  youtubeId?: string;
+  tags?: string[];
+  /** Post slug, used as the comment thread key. */
+  slug: string;
+}
+
+const { title, date, published = false, description, youtubeId, tags = [], slug } = Astro.props;
+
+const formattedDate = date
+  ? new Date(date + 'T12:00:00').toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    })
+  : null;
+
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: title,
+  description,
+  author: { '@type': 'Person', name: 'David Jung' },
+  publisher: { '@type': 'Organization', name: 'jojojiji', url: 'https://jojojiji.com' },
+  url: canonicalUrl.href,
+  ...(date && { datePublished: date }),
+};
+---
+
+<Base
+  title={title}
+  description={description}
+  ogType="article"
+  noindex={!published}
+  publishedTime={date}
+>
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+  <article>
+    {!published && (
+      <p class="draft-banner">
+        This is a draft. It is not listed on the site and search engines are asked to skip it.
+      </p>
+    )}
+
+    <h1>{title}</h1>
+
+    <div class="post-meta">
+      {formattedDate}
+      {formattedDate && tags.length > 0 && <span> &middot; </span>}
+      {tags.length > 0 && (
+        <span class="post-tags">
+          {tags.map((tag) => (
+            <span class="post-tag">{tag}</span>
+          ))}
+        </span>
+      )}
+    </div>
+
+    {youtubeId && <YouTube id={youtubeId} title={title} />}
+
+    <slot />
+
+    {/* Ads run on published posts only. Drafts are noindex review copies. */}
+    {published && <AdUnit />}
+
+    <Comments post={slug} heading="Comments" />
+  </article>
+</Base>

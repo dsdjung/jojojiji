@@ -1,0 +1,33 @@
+---
+/**
+ * Privacy-friendly YouTube embed.
+ *
+ * Uses youtube-nocookie.com and lazy loading so a post with a video still
+ * scores well and does not set tracking cookies until the viewer plays it.
+ */
+
+interface Props {
+  /** The 11 character YouTube video ID, not the full URL. */
+  id: string;
+  /** Accessible title for the iframe. */
+  title?: string;
+  /** Optional caption rendered under the player. */
+  caption?: string;
+}
+
+const { id, title = 'YouTube video', caption } = Astro.props;
+
+const src = `https://www.youtube-nocookie.com/embed/${id}`;
+---
+
+<div class="video-embed">
+  <iframe
+    src={src}
+    title={title}
+    loading="lazy"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    referrerpolicy="strict-origin-when-cross-origin"
+    allowfullscreen
+  ></iframe>
+</div>
+{caption && <p class="video-caption">{caption}</p>}

@@ -1,0 +1,374 @@
+/* jojojiji global styles.
+   Warm and personal, deliberately unlike the austere Asymptronix look. */
+
+:root {
+  --bg: #fffdf8;
+  --bg-soft: #fbf5ea;
+  --ink: #2b2621;
+  --ink-soft: #5c534a;
+  --muted: #8d8377;
+  --rule: #ece3d5;
+  --accent: #d16b3c;
+  --accent-dark: #a9522b;
+  --radius: 10px;
+
+  --font-display: 'Trebuchet MS', 'Avenir Next', 'Segoe UI', system-ui, sans-serif;
+  --font-body: Georgia, 'Iowan Old Style', 'Times New Roman', serif;
+
+  /* Shared component hooks (Comments, AdUnit). */
+  --comments-rule: var(--rule);
+  --comments-muted: var(--muted);
+  --comments-strong: var(--ink);
+  --comments-border: #ded3c2;
+  --comments-input-bg: #fff;
+  --comments-focus: var(--accent);
+  --comments-radius: var(--radius);
+  --comments-button-bg: var(--accent);
+  --comments-button-border: var(--accent);
+  --comments-button-fg: #fff;
+  --comments-error: #b3261e;
+  --comments-success: #2f6b3a;
+  --ad-label-color: #c3b8a6;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 18px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--ink);
+  background: var(--bg);
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Layout */
+
+.site-container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+/* Typography */
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--ink);
+}
+
+h1 {
+  font-size: 2.1rem;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.01em;
+}
+
+h2 {
+  font-size: 1.4rem;
+  margin-top: 2.5rem;
+  margin-bottom: 0.85rem;
+}
+
+h3 {
+  font-size: 1.15rem;
+  margin-top: 2rem;
+  margin-bottom: 0.6rem;
+}
+
+p {
+  margin-bottom: 1.25rem;
+}
+
+a {
+  color: var(--accent-dark);
+  text-decoration: underline;
+  text-decoration-color: #e3bda4;
+  text-underline-offset: 3px;
+  transition: text-decoration-color 0.15s, color 0.15s;
+}
+
+a:hover {
+  text-decoration-color: var(--accent);
+}
+
+blockquote {
+  margin: 2rem 0;
+  padding: 0.25rem 0 0.25rem 1.4rem;
+  border-left: 3px solid var(--accent);
+  font-style: italic;
+  color: var(--ink-soft);
+}
+
+blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--rule);
+  margin: 2.5rem 0;
+}
+
+ul,
+ol {
+  margin-bottom: 1.25rem;
+  padding-left: 1.4rem;
+}
+
+li {
+  margin-bottom: 0.45rem;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius);
+}
+
+code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.88em;
+  background: var(--bg-soft);
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+}
+
+pre {
+  background: var(--bg-soft);
+  padding: 1rem;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin-bottom: 1.25rem;
+}
+
+pre code {
+  background: none;
+  padding: 0;
+}
+
+/* Header */
+
+.site-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 2px solid var(--rule);
+}
+
+.site-header a {
+  text-decoration: none;
+}
+
+.site-title {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: -0.02em;
+}
+
+.site-nav {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+}
+
+.site-nav a {
+  color: var(--ink-soft);
+  margin-left: 1.25rem;
+  text-decoration: none;
+}
+
+.site-nav a:first-child {
+  margin-left: 0;
+}
+
+.site-nav a:hover {
+  color: var(--accent);
+}
+
+/* Footer */
+
+.site-footer {
+  margin-top: 4rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--rule);
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+/* Home intro */
+
+.home-intro {
+  background: var(--bg-soft);
+  border-radius: var(--radius);
+  padding: 1.75rem;
+  margin-bottom: 2.5rem;
+}
+
+.home-intro h1 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.home-intro p {
+  color: var(--ink-soft);
+  font-size: 0.98rem;
+  margin-bottom: 0;
+}
+
+/* Post list */
+
+.post-list {
+  list-style: none;
+  padding: 0;
+}
+
+.post-list li {
+  padding-bottom: 1.75rem;
+  margin-bottom: 1.75rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.post-list li:last-child {
+  border-bottom: none;
+}
+
+.post-list a {
+  text-decoration: none;
+}
+
+.post-list .post-title {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.3;
+}
+
+.post-list a:hover .post-title {
+  color: var(--accent);
+}
+
+.post-list .post-meta {
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin-top: 0.3rem;
+}
+
+.post-list .post-description {
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+  margin-top: 0.45rem;
+  line-height: 1.6;
+}
+
+/* Post page */
+
+.post-meta {
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  color: var(--muted);
+  margin-bottom: 2rem;
+}
+
+.post-tags {
+  display: inline-flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  vertical-align: middle;
+}
+
+.post-tag {
+  background: var(--bg-soft);
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  padding: 0.1rem 0.6rem;
+  font-size: 0.72rem;
+  color: var(--ink-soft);
+}
+
+.draft-banner {
+  background: #fff4e5;
+  border: 1px solid #f0d9b5;
+  border-radius: var(--radius);
+  padding: 0.75rem 1rem;
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  color: #8a5a20;
+  margin-bottom: 1.5rem;
+}
+
+/* Video embed */
+
+.video-embed {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  margin: 2rem 0;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--bg-soft);
+}
+
+.video-embed iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.video-caption {
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-top: -1.25rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+/* About page */
+
+.about-content {
+  font-size: 1rem;
+}
+
+/* Responsive */
+
+@media (max-width: 600px) {
+  html {
+    font-size: 16px;
+  }
+
+  .site-container {
+    padding: 1.5rem 1.1rem 3rem;
+  }
+
+  h1 {
+    font-size: 1.7rem;
+  }
+
+  .home-intro {
+    padding: 1.25rem;
+  }
+}

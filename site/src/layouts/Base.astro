@@ -1,0 +1,73 @@
+---
+import '../styles/global.css';
+import AdSense from '../components/AdSense.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  ogType?: string;
+  noindex?: boolean;
+  publishedTime?: string;
+}
+
+const {
+  title,
+  description = 'Things worth knowing, written for my kids.',
+  ogType = 'website',
+  noindex = false,
+  publishedTime,
+} = Astro.props;
+
+const siteTitle = 'jojojiji';
+const fullTitle = title === siteTitle ? title : `${title} | ${siteTitle}`;
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <link rel="canonical" href={canonicalUrl.href} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <meta name="description" content={description} />
+    <meta name="author" content="David Jung" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={canonicalUrl.href} />
+    <meta property="og:site_name" content={siteTitle} />
+    <meta property="og:locale" content="en_US" />
+    {publishedTime && <meta property="article:published_time" content={publishedTime} />}
+
+    <!-- Twitter/X Card -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+
+    <AdSense />
+  </head>
+  <body>
+    <div class="site-container">
+      <header class="site-header">
+        <a href="/"><span class="site-title">jojojiji</span></a>
+        <nav class="site-nav">
+          <a href="/">Posts</a>
+          <a href="/about">About</a>
+        </nav>
+      </header>
+
+      <main>
+        <slot />
+      </main>
+
+      <footer class="site-footer">
+        &copy; {new Date().getFullYear()} David Jung
+      </footer>
+    </div>
+  </body>
+</html>

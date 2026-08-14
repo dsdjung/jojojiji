@@ -1,0 +1,57 @@
+---
+/**
+ * A single AdSense ad slot.
+ *
+ * Renders nothing unless both PUBLIC_ADSENSE_CLIENT and a slot ID are present,
+ * so pages have no empty ad boxes before AdSense is live.
+ */
+
+interface Props {
+  /** AdSense ad unit ID. Falls back to PUBLIC_ADSENSE_SLOT. */
+  slot?: string;
+  /** AdSense format hint. */
+  format?: string;
+  /** Optional label rendered above the unit. Required by some ad policies. */
+  label?: string;
+}
+
+const { slot, format = 'auto', label = 'Advertisement' } = Astro.props;
+
+const client = import.meta.env.PUBLIC_ADSENSE_CLIENT ?? '';
+const adSlot = slot ?? import.meta.env.PUBLIC_ADSENSE_SLOT ?? '';
+const enabled = client !== '' && adSlot !== '';
+---
+
+{enabled && (
+  <aside class="ad-container">
+    {label && <span class="ad-label">{label}</span>}
+    <ins
+      class="adsbygoogle"
+      style="display:block"
+      data-ad-client={client}
+      data-ad-slot={adSlot}
+      data-ad-format={format}
+      data-full-width-responsive="true"
+    ></ins>
+    <script is:inline>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </aside>
+)}
+
+<style>
+  .ad-container {
+    display: block;
+    margin: 2.5rem 0;
+    min-height: 1px;
+  }
+
+  .ad-label {
+    display: block;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ad-label-color, #bbb);
+    margin-bottom: 0.4rem;
+  }
+</style>

@@ -1,0 +1,308 @@
+---
+/**
+ * Comment moderation queue.
+ *
+ * Static page, no secrets baked in. The admin token is entered at runtime and
+ * kept in sessionStorage, then sent as a bearer token to /api/admin/comments.
+ */
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Moderation</title>
+  </head>
+  <body>
+    <main class="admin">
+      <h1>Comment moderation</h1>
+
+      <form class="admin-auth" data-auth-form>
+        <label>
+          <span>Admin token</span>
+          <input type="password" name="token" autocomplete="current-password" required />
+        </label>
+        <button type="submit">Unlock</button>
+      </form>
+
+      <div class="admin-panel" data-panel hidden>
+        <div class="admin-toolbar">
+          <label>
+            <span>Show</span>
+            <select data-filter>
+              <option value="pending" selected>Pending</option>
+              <option value="approved">Approved</option>
+              <option value="rejected">Rejected</option>
+              <option value="all">All</option>
+            </select>
+          </label>
+          <button type="button" data-refresh>Refresh</button>
+          <button type="button" data-signout class="secondary">Sign out</button>
+        </div>
+
+        <p class="admin-status" data-status></p>
+        <div data-queue></div>
+      </div>
+    </main>
+
+    <script>
+      interface AdminComment {
+        id: string;
+        post: string;
+        name: string;
+        email: string | null;
+        body: string;
+        status: string;
+        createdAt: string;
+      }
+
+      const STORAGE_KEY = 'moderation-token';
+
+      const authForm = document.querySelector<HTMLFormElement>('[data-auth-form]')!;
+      const panel = document.querySelector<HTMLElement>('[data-panel]')!;
+      const queue = document.querySelector<HTMLElement>('[data-queue]')!;
+      const statusEl = document.querySelector<HTMLElement>('[data-status]')!;
+      const filter = document.querySelector<HTMLSelectElement>('[data-filter]')!;
+      const refreshBtn = document.querySelector<HTMLButtonElement>('[data-refresh]')!;
+      const signoutBtn = document.querySelector<HTMLButtonElement>('[data-signout]')!;
+
+      const getToken = () => sessionStorage.getItem(STORAGE_KEY) ?? '';
+
+      const setSignedIn = (signedIn: boolean) => {
+        authForm.hidden = signedIn;
+        panel.hidden = !signedIn;
+      };
+
+      const authHeaders = () => ({ authorization: `Bearer ${getToken()}` });
+
+      const formatDate = (iso: string) => {
+        const d = new Date(iso);
+        return Number.isNaN(d.getTime()) ? iso : d.toLocaleString();
+      };
+
+      async function act(id: string, action: 'approve' | 'reject' | 'delete') {
+        if (action === 'delete' && !confirm('Permanently delete this comment?')) return;
+
+        const res = await fetch('/api/admin/comments', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json', ...authHeaders() },
+          body: JSON.stringify({ id, action }),
+        });
+
+        if (res.ok) {
+          void load();
+        } else {
+          const data = (await res.json().catch(() => ({}))) as { error?: string };
+          statusEl.textContent = data.error ?? 'Action failed.';
+        }
+      }
+
+      function render(comments: AdminComment[]) {
+        queue.replaceChildren();
+
+        if (comments.length === 0) {
+          statusEl.textContent = 'Nothing here.';
+          return;
+        }
+        statusEl.textContent = `${comments.length} comment${comments.length === 1 ? '' : 's'}.`;
+
+        for (const c of comments) {
+          const card = document.createElement('article');
+          card.className = 'admin-comment';
+
+          const meta = document.createElement('div');
+          meta.className = 'admin-comment-meta';
+          meta.textContent = `${c.name}${c.email ? ` <${c.email}>` : ''} · ${c.post} · ${formatDate(c.createdAt)} · ${c.status}`;
+
+          const body = document.createElement('div');
+          body.className = 'admin-comment-body';
+          body.textContent = c.body;
+
+          const actions = document.createElement('div');
+          actions.className = 'admin-comment-actions';
+          for (const action of ['approve', 'reject', 'delete'] as const) {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.textContent = action[0].toUpperCase() + action.slice(1);
+            if (action === 'delete') btn.className = 'danger';
+            btn.addEventListener('click', () => void act(c.id, action));
+            actions.append(btn);
+          }
+
+          card.append(meta, body, actions);
+          queue.append(card);
+        }
+      }
+
+      async function load() {
+        statusEl.textContent = 'Loading…';
+        try {
+          const res = await fetch(`/api/admin/comments?status=${filter.value}`, {
+            headers: authHeaders(),
+          });
+
+          if (res.status === 401) {
+            sessionStorage.removeItem(STORAGE_KEY);
+            setSignedIn(false);
+            statusEl.textContent = '';
+            return;
+          }
+          if (!res.ok) {
+            const data = (await res.json().catch(() => ({}))) as { error?: string };
+            statusEl.textContent = data.error ?? `Request failed (${res.status}).`;
+            return;
+          }
+
+          const data = (await res.json()) as { comments?: AdminComment[] };
+          render(data.comments ?? []);
+        } catch {
+          statusEl.textContent = 'Could not reach the moderation API.';
+        }
+      }
+
+      authForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const token = String(new FormData(authForm).get('token') ?? '').trim();
+        if (token === '') return;
+        sessionStorage.setItem(STORAGE_KEY, token);
+        authForm.reset();
+        setSignedIn(true);
+        void load();
+      });
+
+      signoutBtn.addEventListener('click', () => {
+        sessionStorage.removeItem(STORAGE_KEY);
+        setSignedIn(false);
+        queue.replaceChildren();
+        statusEl.textContent = '';
+      });
+
+      refreshBtn.addEventListener('click', () => void load());
+      filter.addEventListener('change', () => void load());
+
+      if (getToken() !== '') {
+        setSignedIn(true);
+        void load();
+      } else {
+        setSignedIn(false);
+      }
+    </script>
+
+    <style is:global>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+        color: #1a1a1a;
+        background: #fafafa;
+        line-height: 1.6;
+        margin: 0;
+      }
+
+      .admin {
+        max-width: 780px;
+        margin: 0 auto;
+        padding: 2rem 1.25rem 4rem;
+      }
+
+      .admin h1 {
+        font-size: 1.4rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .admin-auth label {
+        display: block;
+        margin-bottom: 0.75rem;
+      }
+
+      .admin-auth span {
+        display: block;
+        font-size: 0.8rem;
+        color: #666;
+        margin-bottom: 0.25rem;
+      }
+
+      .admin input,
+      .admin select {
+        font: inherit;
+        padding: 0.45rem 0.6rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background: #fff;
+      }
+
+      .admin-auth input {
+        width: 100%;
+        max-width: 360px;
+      }
+
+      .admin button {
+        font: inherit;
+        font-size: 0.85rem;
+        padding: 0.4rem 0.9rem;
+        border: 1px solid #1a1a1a;
+        border-radius: 4px;
+        background: #1a1a1a;
+        color: #fff;
+        cursor: pointer;
+      }
+
+      .admin button.secondary {
+        background: #fff;
+        color: #1a1a1a;
+        border-color: #ccc;
+      }
+
+      .admin button.danger {
+        background: #b3261e;
+        border-color: #b3261e;
+      }
+
+      .admin-toolbar {
+        display: flex;
+        gap: 0.75rem;
+        align-items: end;
+        flex-wrap: wrap;
+        margin-bottom: 1rem;
+      }
+
+      .admin-toolbar span {
+        display: block;
+        font-size: 0.8rem;
+        color: #666;
+      }
+
+      .admin-status {
+        font-size: 0.85rem;
+        color: #666;
+        min-height: 1.2em;
+      }
+
+      .admin-comment {
+        background: #fff;
+        border: 1px solid #e5e5e5;
+        border-radius: 6px;
+        padding: 1rem;
+        margin-bottom: 0.85rem;
+      }
+
+      .admin-comment-meta {
+        font-size: 0.75rem;
+        color: #777;
+        margin-bottom: 0.5rem;
+        word-break: break-word;
+      }
+
+      .admin-comment-body {
+        font-size: 0.95rem;
+        white-space: pre-wrap;
+        margin-bottom: 0.75rem;
+      }
+
+      .admin-comment-actions {
+        display: flex;
+        gap: 0.5rem;
+      }
+    </style>
+  </body>
+</html>

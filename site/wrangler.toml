@@ -1,0 +1,19 @@
+#:schema node_modules/wrangler/config-schema.json
+# Cloudflare Pages configuration for jojojiji.com.
+#
+# Secrets are NOT stored here. Set them once with:
+#   npx wrangler pages secret put TURNSTILE_SECRET_KEY --project-name jojojiji
+#   npx wrangler pages secret put ADMIN_TOKEN          --project-name jojojiji
+#   npx wrangler pages secret put IP_HASH_SALT         --project-name jojojiji
+
+name = "jojojiji"
+compatibility_date = "2026-08-01"
+pages_build_output_dir = "dist"
+
+# Comments database. Create it with:
+#   npx wrangler d1 create jojojiji-comments
+# then paste the returned database_id below.
+[[d1_databases]]
+binding = "COMMENTS_DB"
+database_name = "jojojiji-comments"
+database_id = "REPLACE_WITH_D1_DATABASE_ID"
