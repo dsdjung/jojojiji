@@ -28,4 +28,4 @@ ALLOW_ANONYMOUS = "false"
 AUTO_APPROVE_VERIFIED = "false"
 # From Google Cloud Console -> Credentials -> OAuth 2.0 Client ID (Web application).
 # Must match the PUBLIC_GOOGLE_CLIENT_ID repository variable used at build time.
-GOOGLE_CLIENT_ID = ""
+GOOGLE_CLIENT_ID = "877700087632-h62bs6cr4le6c83jqi1ksls2qpp9v687.apps.googleusercontent.com"
