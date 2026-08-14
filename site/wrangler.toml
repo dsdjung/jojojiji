@@ -16,4 +16,4 @@ pages_build_output_dir = "dist"
 [[d1_databases]]
 binding = "COMMENTS_DB"
 database_name = "jojojiji-comments"
-database_id = "REPLACE_WITH_D1_DATABASE_ID"
+database_id = "75671fc8-33d9-4b12-bdc0-6f725c41256b"

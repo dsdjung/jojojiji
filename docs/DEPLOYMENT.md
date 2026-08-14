@@ -6,6 +6,27 @@ comments API and D1 for storage.
 Pushing to `main` runs [.github/workflows/deploy.yml](../.github/workflows/deploy.yml): type
 check, tests, build, then `wrangler pages deploy`. A failing check or test blocks the deploy.
 
+## Current state
+
+Live as of 2026-08-14.
+
+| Resource | Value |
+|---|---|
+| Pages project | `jojojiji` (`jojojiji.pages.dev`) |
+| D1 database | `jojojiji-comments` / `75671fc8-33d9-4b12-bdc0-6f725c41256b` |
+| Turnstile site key | `0x4AAAAAAEPlzpOhi43q3Eve` |
+| Account ID | `095fd59b3aac7869fe6b66380d102ee9` |
+| Custom domains | `jojojiji.com`, `www.jojojiji.com` |
+
+Both apex and `www` are proxied CNAMEs to `jojojiji.pages.dev`. The zone's Cloudflare Email
+Routing records (MX, SPF, DKIM) were left untouched.
+
+**Still outstanding:** `CLOUDFLARE_API_TOKEN` is not set as a GitHub Actions secret, so CI
+deploys fail at the last step. Until it is added, deploy manually with
+`cd site && npx wrangler pages deploy --project-name=jojojiji --branch=main` (requires Node 22+,
+see `.nvmrc`). Creating an API token cannot be scripted through a `wrangler login` OAuth session;
+it has to be done in the dashboard.
+
 ## One-time setup
 
 ### 1. Cloudflare API token
