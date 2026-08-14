@@ -510,6 +510,13 @@ const allowAnonymous = (import.meta.env.PUBLIC_ALLOW_ANONYMOUS ?? '') === 'true'
 </script>
 
 <style>
+  /* The `hidden` attribute is only `display: none` in the UA stylesheet, so any
+     author rule setting `display` beats it. Several elements here are flex and
+     are toggled with `hidden`, so this has to win. */
+  [hidden] {
+    display: none !important;
+  }
+
   .comments {
     margin-top: 3rem;
     padding-top: 1.5rem;

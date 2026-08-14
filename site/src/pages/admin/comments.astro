@@ -213,6 +213,12 @@
     </script>
 
     <style is:global>
+      /* Same guard as the Comments component: `hidden` must beat any author
+         `display` rule, since panels here are toggled with it. */
+      [hidden] {
+        display: none !important;
+      }
+
       body {
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
         color: #1a1a1a;
