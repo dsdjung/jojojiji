@@ -1,44 +1,32 @@
----
-title: "Placeholder: replace this before launch"
-date: "2026-08-14"
-published: false
-description: "A scaffold post that exercises every feature of the site. Rewrite or delete it."
-tags: ["meta"]
----
+# Post patterns
 
-This post exists so the site has something to render while it is being built. It is
-set to `published: false`, so it does not appear on the home page and search engines
-are asked to skip it. Rewrite it or delete the file.
+Copy-paste markup for the two shapes most posts need. Markdown cannot import
+components, but it accepts raw HTML, so these go straight into a `.md` file and
+pick up the styles in `site/src/styles/global.css`.
 
-## What the frontmatter does
+## The answer box
 
-`title` and `description` drive the page title, the listing entry, and the social
-card. `date` sets the published date and the sort order on the home page. `tags`
-render as pills under the title. Setting `published: true` is what makes a post
-appear on the home page.
+Put the formula at the top, before the reasoning. Someone who wants only the
+number should get it without scrolling, and someone who wants the argument
+reads on. This is also the shape that AI answer engines quote.
 
-## Adding a video
-
-Add a `youtubeId` to the frontmatter and the video renders above the body text:
-
-```yaml
-youtubeId: "dQw4w9WgXcQ"
-```
-
-The embed uses `youtube-nocookie.com` and loads lazily, so a post with a video does
-not slow down the rest of the page.
-
-## The answer box and charts
-
-Two shapes most posts need. Both are raw HTML, since markdown cannot import
-components. Copy them from `docs/POST-PATTERNS.md`.
-
+```html
 <div class="answer">
   <div class="answer-label">The short answer</div>
   <p>Keep the <strong>total</strong> cost of a car under <strong>35% of one year's
   income</strong>, and never finance it for more than four years.</p>
 </div>
+```
 
+## A bar chart
+
+Inline SVG. No chart library, no page weight, scales to any screen, and it
+inherits the site's colours through `currentColor` and the CSS variables.
+
+The pattern: one row per bar, `y` increasing by 46 each time. Bar width is
+`value / max * 420`. Keep `viewBox` height at `count * 46 + 70`.
+
+```html
 <figure class="chart">
 <svg viewBox="0 0 640 254" xmlns="http://www.w3.org/2000/svg" role="img"
      aria-labelledby="car-title car-desc">
@@ -71,17 +59,23 @@ components. Copy them from `docs/POST-PATTERNS.md`.
 <figcaption>Total cost means purchase price plus interest, not the monthly payment.
 Monthly payments hide the real number, which is the point of quoting them.</figcaption>
 </figure>
+```
 
-## Formatting
+## Why one page per question
 
-Regular paragraphs, **bold**, *italic*, and [links](https://jojojiji.com) all work.
+Give each decision its own post: "How much car can I afford?" not a combined
+"money rules" page.
 
-> Block quotes look like this.
+- Each targets a distinct search query. People search the question, not the category.
+- Cloudflare Web Analytics **Top Pages** then ranks which decisions readers
+  actually care about, which tells you what to write next. One combined page
+  gives you a single row and no signal.
+- Answer engines cite a page that answers one question far more readily than a
+  page that answers ten.
 
-- Lists work
-- The way you would expect
+## Accessibility
 
-## Comments
-
-Every post has a comment thread at the bottom. Comments go into a moderation queue
-and only appear on the site after they are approved at `/admin/comments`.
+Every chart needs `role="img"` plus `<title>` and `<desc>`, referenced by
+`aria-labelledby`. The `desc` should state the numbers, since a screen reader
+cannot see the bars. It is also what a text-only crawler reads, so it doubles as
+the machine-readable version of the chart.
