@@ -13,9 +13,11 @@ interface Props {
   tags?: string[];
   /** Post slug, used as the comment thread key. */
   slug: string;
+  /** Last substantive revision, ISO `YYYY-MM-DD`. Defaults to the publish date. */
+  updated?: string;
 }
 
-const { title, date, published = false, description, youtubeId, tags = [], slug } = Astro.props;
+const { title, date, published = false, description, youtubeId, tags = [], slug, updated } = Astro.props;
 
 const formattedDate = date
   ? new Date(date + 'T12:00:00').toLocaleDateString('en-US', {
@@ -32,10 +34,15 @@ const jsonLd = {
   '@type': 'Article',
   headline: title,
   description,
-  author: { '@type': 'Person', name: 'David Jung' },
+  author: {
+    '@type': 'Person',
+    name: 'David Jung',
+    sameAs: ['https://jojojiji.com/about/'],
+  },
   publisher: { '@type': 'Organization', name: 'jojojiji', url: 'https://jojojiji.com' },
   url: canonicalUrl.href,
-  ...(date && { datePublished: date }),
+  image: new URL(published ? `/og/${slug}.png` : '/og/default.png', Astro.site).href,
+  ...(date && { datePublished: date, dateModified: updated ?? date }),
 };
 ---
 
@@ -45,6 +52,7 @@ const jsonLd = {
   ogType="article"
   noindex={!published}
   publishedTime={date}
+  ogImage={published ? `/og/${slug}.png` : '/og/default.png'}
 >
   <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 

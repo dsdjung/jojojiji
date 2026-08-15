@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#fffdf8"/>
+  <rect width="1200" height="12" fill="#d16b3c"/>
+  <text font-family='"Trebuchet MS", "Avenir Next", sans-serif' font-size="64" font-weight="bold" fill="#2b2621">
+    <tspan x="80" y="120">jojojiji</tspan>
+  </text>
+  <text font-family='"Trebuchet MS", "Avenir Next", sans-serif' font-size="27" fill="#5c534a">
+    <tspan x="80" y="232.07999999999998">Things worth knowing, written for my kids.</tspan>
+  </text>
+  <text x="80" y="560" font-family='"Trebuchet MS", "Avenir Next", sans-serif' font-size="24"
+        fill="#8d8377" letter-spacing="1">jojojiji.com</text>
+</svg>

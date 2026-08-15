@@ -7,6 +7,8 @@ const posts = defineCollection({
     title: z.string(),
     /** Publication date, ISO `YYYY-MM-DD`. Required once published. */
     date: z.string().optional(),
+    /** Last substantive revision. Surfaced as schema.org dateModified. */
+    updated: z.string().optional(),
     /** Drafts are excluded from listings and the sitemap, but still build at their URL. */
     published: z.boolean().default(false),
     description: z.string(),

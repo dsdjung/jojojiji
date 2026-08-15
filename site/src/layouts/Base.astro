@@ -9,6 +9,8 @@ interface Props {
   ogType?: string;
   noindex?: boolean;
   publishedTime?: string;
+  /** Path to the social card, relative to the site root. */
+  ogImage?: string;
 }
 
 const {
@@ -17,11 +19,15 @@ const {
   ogType = 'website',
   noindex = false,
   publishedTime,
+  ogImage = '/og/default.png',
 } = Astro.props;
 
 const siteTitle = 'jojojiji';
 const fullTitle = title === siteTitle ? title : `${title} | ${siteTitle}`;
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
+// Social cards must be absolute URLs; relative paths are ignored by every
+// major scraper.
+const ogImageUrl = new URL(ogImage, Astro.site).href;
 ---
 
 <!doctype html>
@@ -43,12 +49,16 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:url" content={canonicalUrl.href} />
     <meta property="og:site_name" content={siteTitle} />
     <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     {publishedTime && <meta property="article:published_time" content={publishedTime} />}
 
     <!-- Twitter/X Card -->
-    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={fullTitle} />
     <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
 
     <link rel="alternate" type="application/rss+xml" title="jojojiji" href="/rss.xml" />
 

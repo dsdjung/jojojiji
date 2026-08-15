@@ -11,7 +11,8 @@
     "test:watch": "vitest",
     "astro": "astro",
     "db:init:local": "wrangler d1 execute jojojiji-comments --local --file=./schema.sql",
-    "db:init:remote": "wrangler d1 execute jojojiji-comments --remote --file=./schema.sql"
+    "db:init:remote": "wrangler d1 execute jojojiji-comments --remote --file=./schema.sql",
+    "og": "node scripts/og-images.mjs"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.19",
@@ -21,6 +22,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
+    "sharp": "^0.35.3",
     "typescript": "^5.9.3",
     "vitest": "^3.2.4",
     "wrangler": "^4.42.0"
