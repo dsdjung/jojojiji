@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import AdSense from '../components/AdSense.astro';
+import Analytics from '../components/Analytics.astro';
 
 interface Props {
   title: string;
@@ -50,6 +51,7 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
     <meta name="twitter:description" content={description} />
 
     <AdSense />
+    <Analytics />
   </head>
   <body>
     <div class="site-container">

@@ -1,0 +1,24 @@
+---
+/**
+ * Cloudflare Web Analytics beacon.
+ *
+ * Uses the manual snippet rather than Cloudflare's automatic injection, because
+ * automatic injection only works for hostnames proxied through Cloudflare and
+ * this site's apex is deliberately unproxied. The beacon is client side, so it
+ * reports correctly either way.
+ *
+ * Cookieless, so it needs no consent banner. Renders nothing until
+ * PUBLIC_CF_BEACON_TOKEN is set, keeping the pages script-free before then.
+ */
+
+const token = import.meta.env.PUBLIC_CF_BEACON_TOKEN ?? '';
+---
+
+{token && (
+  <script
+    is:inline
+    defer
+    src="https://static.cloudflareinsights.com/beacon.min.js"
+    data-cf-beacon={JSON.stringify({ token })}
+  ></script>
+)}
