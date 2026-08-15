@@ -1,0 +1,40 @@
+---
+/**
+ * Not found.
+ *
+ * Without this file Cloudflare Pages falls back to serving index.html with a
+ * 200 for any unmatched path, which search engines treat as a soft 404 and can
+ * index as duplicate copies of the home page.
+ */
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('posts');
+const recent = posts
+  .filter((p) => p.data.published)
+  .sort((a, b) => (b.data.date ?? '').localeCompare(a.data.date ?? ''))
+  .slice(0, 3);
+---
+
+<Base title="Page not found" description="That page does not exist." noindex={true}>
+  <h1>Page not found</h1>
+  <p>That address does not point to anything. It may have moved, or it may never have existed.</p>
+
+  {recent.length > 0 && (
+    <>
+      <h2>Recent posts</h2>
+      <ul class="post-list">
+        {recent.map((post) => (
+          <li>
+            <a href={`/posts/${post.id}`}>
+              <div class="post-title">{post.data.title}</div>
+            </a>
+            <div class="post-description">{post.data.description}</div>
+          </li>
+        ))}
+      </ul>
+    </>
+  )}
+
+  <p><a href="/">Back to all posts</a></p>
+</Base>
