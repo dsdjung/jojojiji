@@ -14,10 +14,11 @@
 const token = import.meta.env.PUBLIC_CF_BEACON_TOKEN ?? '';
 ---
 
+{/* Matches the snippet Cloudflare generates, including type="module". */}
 {token && (
   <script
     is:inline
-    defer
+    type="module"
     src="https://static.cloudflareinsights.com/beacon.min.js"
     data-cf-beacon={JSON.stringify({ token })}
   ></script>
