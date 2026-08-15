@@ -21,11 +21,12 @@ Live as of 2026-08-14.
 Both apex and `www` are proxied CNAMEs to `jojojiji.pages.dev`. The zone's Cloudflare Email
 Routing records (MX, SPF, DKIM) were left untouched.
 
-**Still outstanding:** `CLOUDFLARE_API_TOKEN` is not set as a GitHub Actions secret, so CI
-deploys fail at the last step. Until it is added, deploy manually with
-`cd site && npx wrangler pages deploy --project-name=jojojiji --branch=main` (requires Node 22+,
-see `.nvmrc`). Creating an API token cannot be scripted through a `wrangler login` OAuth session;
-it has to be done in the dashboard.
+CI deploys are fully wired: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`,
+`PUBLIC_TURNSTILE_SITE_KEY`, and `PUBLIC_GOOGLE_CLIENT_ID` are all set on the repository, and
+pushing to `main` deploys. Local deploys need Node 22+ (see `.nvmrc`).
+
+Still outstanding: AdSense (`PUBLIC_ADSENSE_CLIENT`, `PUBLIC_ADSENSE_SLOT`) and Cloudflare
+Web Analytics, both described below.
 
 ## One-time setup
 
@@ -107,3 +108,21 @@ such in AdSense, which restricts it to non-personalized ads.
 
 Cloudflare Pages keeps every deployment. **Workers & Pages → jojojiji → Deployments →
 … → Rollback**, or push a revert commit.
+
+## Analytics
+
+**Cloudflare Web Analytics** is the recommended setup: free, cookieless (so no consent
+banner), and it needs no code in this repo.
+
+Enable it at **Cloudflare dashboard → Workers & Pages → jojojiji → Settings → Web Analytics →
+Enable**. Cloudflare injects the beacon at the edge on every response; nothing to build or
+deploy. "Top Pages" is the report that answers which writeups are read most.
+
+Do not use Cloudflare's *zone* analytics as the measure of traffic here. It only sees proxied
+requests, and asymptronix.com's apex is deliberately DNS-only (see the redirect-rule note
+above), so it would undercount. The Web Analytics beacon is client side and unaffected.
+
+**Google Search Console** is worth pairing with it. It reports the search queries people used
+to find the site and which pages nearly rank, which is more useful for deciding what to write
+next than pageviews alone. Verify ownership with a DNS TXT record on the zone, then submit
+`https://jojojiji.com/sitemap-index.xml`.
