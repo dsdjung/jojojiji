@@ -29,8 +29,17 @@ are cheap to build at your age and expensive to build at mine."* And the ending:
 So each script has to carry four things, and it is generic self-help the moment
 it drops one:
 
-- **A first-person stake.** Not "most people shrink themselves" but "I did it to
-  myself for about twenty years." The claim needs someone standing behind it.
+- **One person talking to another.** That comes from directness and from being
+  specific, not from saying "I" a lot. Half of these never say it and still
+  sound like someone rather than an account. Use first person where it earns
+  something — 07 admits still wanting to fix things, 08 names who the biased
+  supporter is — and leave it out everywhere else.
+- **Claims that fit who is making them.** The first draft of 02 had a father
+  confessing to twenty years of making himself small. To kids who see him as a
+  success that reads as false modesty, and they discount the whole thing. He has
+  a better vantage point anyway: he has watched it happen to other people, which
+  is authority they cannot get anywhere else. Say the version that is true from
+  where you actually stand.
 - **Mechanism, not assertion.** Say why it works. The long exhale slows your
   heart; the gap never closes because the target moves with you. Reasons are
   what let someone disagree with you properly.

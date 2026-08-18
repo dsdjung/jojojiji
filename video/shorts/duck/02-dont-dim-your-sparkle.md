@@ -16,13 +16,13 @@ A windowsill, late afternoon, strong side light.
 
 ## Voiceover
 
-*80 words. Read it slower than feels right — the sign says to breathe.*
+*86 words. Read it slower than feels right — the sign says to breathe.*
 
-Nobody ever told me to be smaller. I worked it out on my own, somewhere around your age, off a face someone made once. Then I did it to myself for about twenty years.
+Worth watching for, because it happens quietly. Someone good at what they do decides to take up less room. Quieter in the meeting, smaller claims about their own work. Nobody asked them to — they read it off a face somebody made once.
 
-Here is what it bought me. Nothing. Shrinking doesn't make a room comfortable, it makes you quieter, and quiet people get overlooked by the same room that made them quiet.
+It never buys what they hoped. A quieter person doesn't make a room comfortable. They just get overlooked by the same room that made them quiet.
 
-I can't tell you it works that way for everyone. It worked that way for me.
+The ones I've watched do well were not the most talented. They were the ones still visible.
 
 ## Sound
 
@@ -34,7 +34,7 @@ This duck reminds you: don't dim your sparkle
 
 ## Description
 
-Nobody ever told me to be smaller. I worked it out on my own, somewhere around your age, off a face someone made once. Then I did it to myself for about twenty years.
+Worth watching for, because it happens quietly. Someone good at what they do decides to take up less room. Quieter in the meeting, smaller claims about their own work. Nobody asked them to — they read it off a face somebody made once.
 
 From jojojiji — things worth knowing, written for my kids and readable by anyone.
 jojojiji.com

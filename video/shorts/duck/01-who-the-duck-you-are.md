@@ -16,13 +16,13 @@ A desk in use — papers, a mug, a laptop half closed.
 
 ## Voiceover
 
-*84 words. Read it slower than feels right — the sign says to breathe.*
+*74 words. Read it slower than feels right — the sign says to breathe.*
 
-You will have a day where it all goes wrong, and by the evening you will be deciding what kind of person you are. Don't. On the day it went wrong you are the worst available judge of yourself.
+You'll have a day where it all goes wrong, and by the evening you'll be deciding what kind of person you are. Don't. On the day it went wrong you are the worst available judge of yourself.
 
-What I do is name three things that were true yesterday and will still be true tomorrow. Not things I achieved. Things I would still be if the day had gone the other way.
+Name three things that were true yesterday and will still be true tomorrow. Not achievements. Things you'd still be if the day had gone the other way.
 
-Whatever is left after you subtract today — that is you.
+Whatever is left after you subtract today — that's you.
 
 ## Sound
 
@@ -34,7 +34,7 @@ Breathe and remember WHO THE DUCK YOU ARE
 
 ## Description
 
-You will have a day where it all goes wrong, and by the evening you will be deciding what kind of person you are. Don't. On the day it went wrong you are the worst available judge of yourself.
+You'll have a day where it all goes wrong, and by the evening you'll be deciding what kind of person you are. Don't. On the day it went wrong you are the worst available judge of yourself.
 
 From jojojiji — things worth knowing, written for my kids and readable by anyone.
 jojojiji.com

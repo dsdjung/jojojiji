@@ -16,11 +16,11 @@ A kitchen counter beside something half finished — dough, a drawing, homework.
 
 ## Voiceover
 
-*81 words. Read it slower than feels right — the sign says to breathe.*
+*79 words. Read it slower than feels right — the sign says to breathe.*
 
-Perfectionism feels responsible. It looks like high standards, so it's easy to be proud of, and I was.
+Perfectionism feels responsible. It looks like high standards, so it's easy to be proud of.
 
-It took me a long time to notice it's mostly a way of not finding out. A bad first version tells you something. A perfect plan tells you nothing, because you haven't touched anything real yet, and real is where the surprises are kept.
+What took a long time to notice is that it's mostly a way of not finding out. A bad first version tells you something. A perfect plan tells you nothing, because you haven't touched anything real yet, and real is where the surprises are kept.
 
 So finish it badly. Then you'll know what's actually wrong with it, which is more than you know now.
 
@@ -34,7 +34,7 @@ Progress, no perfection — that's the duck way.
 
 ## Description
 
-Perfectionism feels responsible. It looks like high standards, so it's easy to be proud of, and I was.
+Perfectionism feels responsible. It looks like high standards, so it's easy to be proud of.
 
 From jojojiji — things worth knowing, written for my kids and readable by anyone.
 jojojiji.com
