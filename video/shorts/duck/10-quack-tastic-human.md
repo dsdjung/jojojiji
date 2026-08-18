@@ -6,6 +6,12 @@
 One shot, held throughout. The duck doesn't need to do anything and neither does
 the camera; the voice carries it.
 
+## Message
+
+*Write what you want to say here, in whatever length and order it comes out.
+Rough is fine — half-sentences, a story that runs long, a note to yourself. The
+script below gets rebuilt from this.*
+
 ## Shot
 
 Morning. Kitchen or hallway, ordinary start-of-day light.
@@ -15,6 +21,8 @@ Morning. Kitchen or hallway, ordinary start-of-day light.
 **The thing that moves.** Kettle steam, a door in the background, someone passing out of focus.
 
 ## Voiceover
+
+*Draft, to be replaced from Message above.*
 
 *81 words. Read it slower than feels right — the sign says to breathe.*
 

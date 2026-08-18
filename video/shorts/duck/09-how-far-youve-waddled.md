@@ -6,6 +6,12 @@
 One shot, held throughout. The duck doesn't need to do anything and neither does
 the camera; the voice carries it.
 
+## Message
+
+*Write what you want to say here, in whatever length and order it comes out.
+Rough is fine — half-sentences, a story that runs long, a note to yourself. The
+script below gets rebuilt from this.*
+
 ## Shot
 
 Somewhere with distance behind — a path, a long window, a staircase.
@@ -15,6 +21,8 @@ Somewhere with distance behind — a path, a long window, a staircase.
 **The thing that moves.** Whatever is far away: traffic, trees, people, weather.
 
 ## Voiceover
+
+*Draft, to be replaced from Message above.*
 
 *79 words. Read it slower than feels right — the sign says to breathe.*
 

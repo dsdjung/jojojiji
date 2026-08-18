@@ -15,6 +15,25 @@ No cutting. One shot held the whole way through, because the subject is stillnes
 and cutting every second argues with the words. It also makes ten of these an
 afternoon rather than ten shoots.
 
+## How these get written
+
+Each file has a **Message** section. That is where the actual thing being said
+goes, written by David, in whatever shape it arrives — long, unfinished, out of
+order. The Voiceover section is built from it afterwards.
+
+The split is deliberate. What a script says has to come from the person whose
+kids these are; how long it runs, what the shot is, and where it breaks for
+breath is craft and can be handled separately. Writing both halves is how the
+first three attempts ended up sounding like everyone else.
+
+When rebuilding a Voiceover from a Message:
+
+- Keep his sentences. Cut for time, do not re-say things that already work.
+- Cutting is nearly always the whole job. 25-30 seconds is 76-90 words, and a
+  message will usually arrive longer than that. Losing a whole idea beats
+  compressing three into a sentence nobody can follow.
+- Flag anything reworded rather than trimmed, so it can be put back.
+
 ## Whose voice this is
 
 The first drafts read like generic encouragement, and the reason was structural:

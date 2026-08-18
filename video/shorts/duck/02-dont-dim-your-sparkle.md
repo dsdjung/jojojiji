@@ -6,6 +6,12 @@
 One shot, held throughout. The duck doesn't need to do anything and neither does
 the camera; the voice carries it.
 
+## Message
+
+*Write what you want to say here, in whatever length and order it comes out.
+Rough is fine — half-sentences, a story that runs long, a note to yourself. The
+script below gets rebuilt from this.*
+
 ## Shot
 
 A windowsill, late afternoon, strong side light.
@@ -15,6 +21,8 @@ A windowsill, late afternoon, strong side light.
 **The thing that moves.** Leaf shadows moving, or the light shifting as cloud passes.
 
 ## Voiceover
+
+*Draft, to be replaced from Message above.*
 
 *86 words. Read it slower than feels right — the sign says to breathe.*
 

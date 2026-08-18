@@ -6,6 +6,12 @@
 One shot, held throughout. The duck doesn't need to do anything and neither does
 the camera; the voice carries it.
 
+## Message
+
+*Write what you want to say here, in whatever length and order it comes out.
+Rough is fine — half-sentences, a story that runs long, a note to yourself. The
+script below gets rebuilt from this.*
+
 ## Shot
 
 A kitchen counter beside something half finished — dough, a drawing, homework.
@@ -15,6 +21,8 @@ A kitchen counter beside something half finished — dough, a drawing, homework.
 **The thing that moves.** Hands entering to carry on with the work, duck untouched throughout.
 
 ## Voiceover
+
+*Draft, to be replaced from Message above.*
 
 *79 words. Read it slower than feels right — the sign says to breathe.*
 

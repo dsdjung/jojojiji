@@ -6,6 +6,12 @@
 One shot, held throughout. The duck doesn't need to do anything and neither does
 the camera; the voice carries it.
 
+## Message
+
+*Write what you want to say here, in whatever length and order it comes out.
+Rough is fine — half-sentences, a story that runs long, a note to yourself. The
+script below gets rebuilt from this.*
+
 ## Shot
 
 A desk in use — papers, a mug, a laptop half closed.
@@ -15,6 +21,8 @@ A desk in use — papers, a mug, a laptop half closed.
 **The thing that moves.** Steam off the mug, or the laptop screen timing out.
 
 ## Voiceover
+
+*Draft, to be replaced from Message above.*
 
 *74 words. Read it slower than feels right — the sign says to breathe.*
 
