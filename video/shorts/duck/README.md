@@ -5,15 +5,15 @@ Ten shorts. One plush duck holding one sign, and nothing else.
 Sign text is fixed by `docs/DUCK.md` — it is a physical prop, so whatever is
 printed is the whole content. No voiceover, no captions, no cuts.
 
-## Why nothing else
+## One shot, one voice
 
-A thirty-second short has to earn the time it asks for, so it needs an idea. A
-six-second one asks for almost nothing, and adding narration to it would be
-answering a question nobody asked. The sign says the thing. Anything else is
-someone explaining a joke.
+The sign is the hook and the voiceover is the reason to stay. A short that only
+says "you're doing great" gets scrolled; each of these carries one thing a
+person can actually do or check.
 
-It is also the only version that scales. Ten of these is an afternoon, not ten
-shoots, and the format survives a hundred more signs.
+What it does not have is cutting. One shot, held the whole way through, because
+the subject is stillness and cutting every second contradicts the words. That
+also makes it an afternoon's work for ten rather than ten shoots.
 
 ## The four things that actually decide if it works
 
@@ -27,25 +27,23 @@ and people scroll photos. It needs one small live thing: a breeze, light
 shifting, a hand setting the duck down and leaving, the sign settling. Not a
 camera move — something in the world.
 
-**Make it loop.** Shorts replay automatically. If the first and last frame match,
-it loops invisibly and one viewer watches four times, which is the cheapest
-watch-time there is. Start and end on the same framing, and cut on a moment
-where nothing is mid-motion.
+**Do not post it silent under the voice.** Room tone from the actual room, not a
+clean studio bed — a kitchen, birds, traffic through a window. The whole premise
+is that this duck is in somebody's house, and a silent background undoes it.
 
-**Do not post it silent.** Silence reads as a broken video and people leave.
-Room tone is enough — a kitchen, birds, traffic through a window. Real sound
-beats library music here, because the whole point is that this duck is in
-somebody's actual house.
+**Read it slower than feels right.** Every one of these runs 76-86 words, which
+is 25-30 seconds at a calm pace. Rushing a duck telling you to breathe is the
+one mistake the format cannot survive.
 
 ## Format
 
-Vertical 9:16. Six seconds, which is two comfortable reads of the sign.
+Vertical 9:16, 25-30 seconds, a single held shot.
 
 Vary the setting across the ten. Same shelf ten times looks like one thing
 posted ten times.
 
-## Longer versions
+## These double as posts
 
-`notes-for-posts.md` holds a written idea per sign — what each one is really
-about. Those are for jojojiji posts, not for these videos. If a sign lands, the
-post is where it gets explained.
+The voiceover in each file is the argument in miniature. If a sign lands, the
+jojojiji post is the same idea with room to breathe — `05` and `07` are the two
+that stand up on their own.
