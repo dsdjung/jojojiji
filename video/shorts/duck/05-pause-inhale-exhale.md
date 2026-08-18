@@ -1,10 +1,10 @@
-# 05 — The double inhale, and why the exhale matters more
+# 05 — The breath that actually works
 
 **Sign:** Pause. Inhale. Exhale. Waddle forward
 **Length:** 25-30s, vertical 9:16
 
-One shot, held for the whole thing. The duck does not need to do anything and
-neither does the camera; the voice carries it.
+One shot, held throughout. The duck doesn't need to do anything and neither does
+the camera; the voice carries it.
 
 ## Shot
 
@@ -16,15 +16,15 @@ Somewhere quiet — the edge of a bed, a step, a car at night.
 
 ## Voiceover
 
-*86 words. Read it slower than feels right — the sign says to breathe.*
+*83 words. Read it slower than feels right — the sign says to breathe.*
 
-This one is real, and it is faster than anything else I know.
+This is the one on this list I'm most sure about, because you can feel it working.
 
-Two inhales through the nose. A normal one, then a short top-up on top of it. Then a long slow exhale through the mouth, longer than the inhale was.
+Two breaths in through your nose — a normal one, then a short one on top of it. Then a long slow breath out through your mouth, longer than the way in.
 
-The second inhale reopens the small air sacs in your lungs, and the long exhale is what actually slows your heart down. That is the part people skip. Breathing in is not the calming bit. Breathing out is.
+The second breath in reopens the small sacs in your lungs. The long breath out is what slows your heart. That's the part people skip. Breathing in isn't the calming half.
 
-Do it twice. About thirty seconds.
+Twice is enough.
 
 ## Sound
 
@@ -36,7 +36,7 @@ Pause. Inhale. Exhale. Waddle forward
 
 ## Description
 
-This one is real, and it is faster than anything else I know.
+This is the one on this list I'm most sure about, because you can feel it working.
 
 From jojojiji — things worth knowing, written for my kids and readable by anyone.
 jojojiji.com

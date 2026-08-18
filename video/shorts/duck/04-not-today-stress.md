@@ -1,10 +1,10 @@
-# 04 — Sort it into two piles
+# 04 — Two piles of stress
 
 **Sign:** Not today, stress!
 **Length:** 25-30s, vertical 9:16
 
-One shot, held for the whole thing. The duck does not need to do anything and
-neither does the camera; the voice carries it.
+One shot, held throughout. The duck doesn't need to do anything and neither does
+the camera; the voice carries it.
 
 ## Shot
 
@@ -16,15 +16,15 @@ A cluttered table, early evening, one lamp on.
 
 ## Voiceover
 
-*86 words. Read it slower than feels right — the sign says to breathe.*
+*76 words. Read it slower than feels right — the sign says to breathe.*
 
-Stress is not one thing, which is why telling someone not to stress never works. There are two kinds and they need opposite treatment.
+Telling someone not to stress has never once worked, and I think that's because stress isn't one thing.
 
-There is the kind you can act on today. Do the smallest piece of it now, even badly, and it shrinks.
+Some of it you can act on today. Do the smallest piece now, badly, and it gets smaller.
 
-And there is the kind you cannot act on today. That one is not a problem to solve, it is weather. You are not failing by leaving it alone.
+The rest you can't act on today. That isn't a problem to solve, it's weather. You're not failing by leaving it alone.
 
-Sort them first. Most of the weight is in the second pile.
+Sort them before you carry them. Most of what I used to carry was in the second pile.
 
 ## Sound
 
@@ -36,7 +36,7 @@ Not today, stress!
 
 ## Description
 
-Stress is not one thing, which is why telling someone not to stress never works. There are two kinds and they need opposite treatment.
+Telling someone not to stress has never once worked, and I think that's because stress isn't one thing.
 
 From jojojiji — things worth knowing, written for my kids and readable by anyone.
 jojojiji.com

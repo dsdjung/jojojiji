@@ -1,10 +1,10 @@
-# 02 — The cost of making yourself smaller
+# 02 — What making yourself smaller costs
 
 **Sign:** This duck reminds you: don't dim your sparkle
 **Length:** 25-30s, vertical 9:16
 
-One shot, held for the whole thing. The duck does not need to do anything and
-neither does the camera; the voice carries it.
+One shot, held throughout. The duck doesn't need to do anything and neither does
+the camera; the voice carries it.
 
 ## Shot
 
@@ -16,13 +16,13 @@ A windowsill, late afternoon, strong side light.
 
 ## Voiceover
 
-*77 words. Read it slower than feels right — the sign says to breathe.*
+*80 words. Read it slower than feels right — the sign says to breathe.*
 
-Most people are never told to be smaller. They work it out on their own, from a face somebody made once, and then they do it to themselves for years.
+Nobody ever told me to be smaller. I worked it out on my own, somewhere around your age, off a face someone made once. Then I did it to myself for about twenty years.
 
-Worth knowing: it does not buy you anything. Shrinking does not make a room comfortable, it makes you quieter — and quiet people get overlooked by the same room that made them quiet.
+Here is what it bought me. Nothing. Shrinking doesn't make a room comfortable, it makes you quieter, and quiet people get overlooked by the same room that made them quiet.
 
-If you are going to be uncomfortable either way, be uncomfortable at full size.
+I can't tell you it works that way for everyone. It worked that way for me.
 
 ## Sound
 
@@ -34,7 +34,7 @@ This duck reminds you: don't dim your sparkle
 
 ## Description
 
-Most people are never told to be smaller. They work it out on their own, from a face somebody made once, and then they do it to themselves for years.
+Nobody ever told me to be smaller. I worked it out on my own, somewhere around your age, off a face someone made once. Then I did it to myself for about twenty years.
 
 From jojojiji — things worth knowing, written for my kids and readable by anyone.
 jojojiji.com

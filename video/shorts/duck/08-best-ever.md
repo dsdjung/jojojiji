@@ -1,10 +1,10 @@
-# 08 — One unreasonable person
+# 08 — One person who isn't impartial
 
 **Sign:** This duck thinks YOU'RE THE BEST EVER
 **Length:** 25-30s, vertical 9:16
 
-One shot, held for the whole thing. The duck does not need to do anything and
-neither does the camera; the voice carries it.
+One shot, held throughout. The duck doesn't need to do anything and neither does
+the camera; the voice carries it.
 
 ## Shot
 
@@ -16,15 +16,15 @@ A child's shelf or a bedside table. Unpretentious, slightly silly.
 
 ## Voiceover
 
-*81 words. Read it slower than feels right — the sign says to breathe.*
+*76 words. Read it slower than feels right — the sign says to breathe.*
 
-Obviously a duck does not think anything. But it stands in for something real.
+A duck doesn't think anything. But it stands in for something I want you to know.
 
-Almost everyone who does well has at least one person who is unreasonably, unconditionally on their side. Not a fair judge — a biased one. Someone whose opinion of them does not move when the results do.
+Nearly everyone who does well has at least one person who is unreasonably on their side. Not a fair judge — a biased one, whose opinion of them doesn't move when the results do.
 
-You probably have one and have not noticed. And you are almost certainly that person for someone who has never told you.
+You have one. It's me, and I've never been impartial and I'm not going to start.
 
-Be a bit unreasonable about someone this week.
+You're probably that person for someone who hasn't told you.
 
 ## Sound
 
@@ -36,7 +36,7 @@ This duck thinks YOU'RE THE BEST EVER
 
 ## Description
 
-Obviously a duck does not think anything. But it stands in for something real.
+A duck doesn't think anything. But it stands in for something I want you to know.
 
 From jojojiji — things worth knowing, written for my kids and readable by anyone.
 jojojiji.com

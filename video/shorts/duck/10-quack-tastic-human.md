@@ -3,8 +3,8 @@
 **Sign:** You're one quack-tastic human
 **Length:** 25-30s, vertical 9:16
 
-One shot, held for the whole thing. The duck does not need to do anything and
-neither does the camera; the voice carries it.
+One shot, held throughout. The duck doesn't need to do anything and neither does
+the camera; the voice carries it.
 
 ## Shot
 
@@ -16,13 +16,13 @@ Morning. Kitchen or hallway, ordinary start-of-day light.
 
 ## Voiceover
 
-*83 words. Read it slower than feels right — the sign says to breathe.*
+*81 words. Read it slower than feels right — the sign says to breathe.*
 
-Somewhere along the way most people start doing a quiet sum. Worth equals what got done. It is a tidy rule and it holds up fine, right up until the first week you cannot do much.
+At some point most people start doing a quiet sum. What I'm worth equals what I got done. It's tidy, and it holds up fine right until the first week you can't do much.
 
-Then it turns on you. And it hits hardest the people who were best at it.
+Then it turns on you, and it hits hardest the people who were best at it — which is worth knowing before you get good at it.
 
-The people you love are not on that scale. You have never once worked out their value from their week. Extend yourself the same arithmetic you already use for everybody else.
+You've never once worked out what someone you love is worth from their week. Use the same arithmetic on yourself.
 
 ## Sound
 
@@ -34,7 +34,7 @@ You're one quack-tastic human
 
 ## Description
 
-Somewhere along the way most people start doing a quiet sum. Worth equals what got done. It is a tidy rule and it holds up fine, right up until the first week you cannot do much.
+At some point most people start doing a quiet sum. What I'm worth equals what I got done. It's tidy, and it holds up fine right until the first week you can't do much.
 
 From jojojiji — things worth knowing, written for my kids and readable by anyone.
 jojojiji.com

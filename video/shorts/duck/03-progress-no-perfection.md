@@ -3,8 +3,8 @@
 **Sign:** Progress, no perfection — that's the duck way.
 **Length:** 25-30s, vertical 9:16
 
-One shot, held for the whole thing. The duck does not need to do anything and
-neither does the camera; the voice carries it.
+One shot, held throughout. The duck doesn't need to do anything and neither does
+the camera; the voice carries it.
 
 ## Shot
 
@@ -16,13 +16,13 @@ A kitchen counter beside something half finished — dough, a drawing, homework.
 
 ## Voiceover
 
-*76 words. Read it slower than feels right — the sign says to breathe.*
+*81 words. Read it slower than feels right — the sign says to breathe.*
 
-The reason perfectionism feels responsible is that it looks like high standards. It is not. It is a way of never having to find out.
+Perfectionism feels responsible. It looks like high standards, so it's easy to be proud of, and I was.
 
-A bad first version gives you information. A perfect plan gives you none, because you have not touched reality yet, and reality is where all the surprises are kept.
+It took me a long time to notice it's mostly a way of not finding out. A bad first version tells you something. A perfect plan tells you nothing, because you haven't touched anything real yet, and real is where the surprises are kept.
 
-So finish it badly. Then you will know what is actually wrong with it, which is more than you know right now.
+So finish it badly. Then you'll know what's actually wrong with it, which is more than you know now.
 
 ## Sound
 
@@ -34,7 +34,7 @@ Progress, no perfection — that's the duck way.
 
 ## Description
 
-The reason perfectionism feels responsible is that it looks like high standards. It is not. It is a way of never having to find out.
+Perfectionism feels responsible. It looks like high standards, so it's easy to be proud of, and I was.
 
 From jojojiji — things worth knowing, written for my kids and readable by anyone.
 jojojiji.com

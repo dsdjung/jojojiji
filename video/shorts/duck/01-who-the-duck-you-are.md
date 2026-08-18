@@ -3,8 +3,8 @@
 **Sign:** Breathe and remember WHO THE DUCK YOU ARE
 **Length:** 25-30s, vertical 9:16
 
-One shot, held for the whole thing. The duck does not need to do anything and
-neither does the camera; the voice carries it.
+One shot, held throughout. The duck doesn't need to do anything and neither does
+the camera; the voice carries it.
 
 ## Shot
 
@@ -16,11 +16,11 @@ A desk in use — papers, a mug, a laptop half closed.
 
 ## Voiceover
 
-*78 words. Read it slower than feels right — the sign says to breathe.*
+*84 words. Read it slower than feels right — the sign says to breathe.*
 
-You had a bad day, so now you are deciding what kind of person you are. Do not do that today. You are the worst judge of yourself on the day it went wrong.
+You will have a day where it all goes wrong, and by the evening you will be deciding what kind of person you are. Don't. On the day it went wrong you are the worst available judge of yourself.
 
-Here is what works. Name three things about you that were true yesterday and will still be true tomorrow. Not achievements. Things you would still be if today had gone the other way.
+What I do is name three things that were true yesterday and will still be true tomorrow. Not things I achieved. Things I would still be if the day had gone the other way.
 
 Whatever is left after you subtract today — that is you.
 
@@ -34,7 +34,7 @@ Breathe and remember WHO THE DUCK YOU ARE
 
 ## Description
 
-You had a bad day, so now you are deciding what kind of person you are. Do not do that today. You are the worst judge of yourself on the day it went wrong.
+You will have a day where it all goes wrong, and by the evening you will be deciding what kind of person you are. Don't. On the day it went wrong you are the worst available judge of yourself.
 
 From jojojiji — things worth knowing, written for my kids and readable by anyone.
 jojojiji.com

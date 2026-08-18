@@ -3,8 +3,8 @@
 **Sign:** Get up. Quack up. Go again.
 **Length:** 25-30s, vertical 9:16
 
-One shot, held for the whole thing. The duck does not need to do anything and
-neither does the camera; the voice carries it.
+One shot, held throughout. The duck doesn't need to do anything and neither does
+the camera; the voice carries it.
 
 ## Shot
 
@@ -16,13 +16,13 @@ The floor. Camera at floor level, looking across rather than down.
 
 ## Voiceover
 
-*84 words. Read it slower than feels right — the sign says to breathe.*
+*79 words. Read it slower than feels right — the sign says to breathe.*
 
-Nobody is keeping score of whether you fall. Everyone falls, often, and the people who look like they do not are simply standing further away from you.
+Nobody is counting how often you fall. Everyone falls, often. The ones who look like they don't are just standing far enough away that you can't see it.
 
-What actually differs between people is how long they stay down. That is a skill, and it gets shorter with practice — which is a strange thing to be glad about, but it is the useful part.
+What actually differs is how long people stay down — and that's a skill, which is a strange thing to be glad about, except that skills get better with use.
 
-You are not trying to stop falling. You are trying to get recovery down from a week to a day.
+I'm not asking you to stop falling. I'd like you to get the recovery from a week down to a day.
 
 ## Sound
 
@@ -34,7 +34,7 @@ Get up. Quack up. Go again.
 
 ## Description
 
-Nobody is keeping score of whether you fall. Everyone falls, often, and the people who look like they do not are simply standing further away from you.
+Nobody is counting how often you fall. Everyone falls, often. The ones who look like they don't are just standing far enough away that you can't see it.
 
 From jojojiji — things worth knowing, written for my kids and readable by anyone.
 jojojiji.com

@@ -8,12 +8,38 @@ printed is the whole content. No voiceover, no captions, no cuts.
 ## One shot, one voice
 
 The sign is the hook and the voiceover is the reason to stay. A short that only
-says "you're doing great" gets scrolled; each of these carries one thing a
-person can actually do or check.
+says "you're doing great" gets scrolled; each of these carries one thing a person
+can actually do or check.
 
-What it does not have is cutting. One shot, held the whole way through, because
-the subject is stillness and cutting every second contradicts the words. That
-also makes it an afternoon's work for ten rather than ten shoots.
+No cutting. One shot held the whole way through, because the subject is stillness
+and cutting every second argues with the words. It also makes ten of these an
+afternoon rather than ten shoots.
+
+## Whose voice this is
+
+The first drafts read like generic encouragement, and the reason was structural:
+there was no "I" anywhere in them. Anonymous advice to a stranger.
+
+jojojiji is a father explaining something to his kids, and the posts already show
+what that sounds like. From the blood sugar one: *"I worked this out because I
+needed to, and what I am describing is what worked for me."* And: *"the habits
+are cheap to build at your age and expensive to build at mine."* And the ending:
+*"That is the whole argument. Do what you like with it."*
+
+So each script has to carry four things, and it is generic self-help the moment
+it drops one:
+
+- **A first-person stake.** Not "most people shrink themselves" but "I did it to
+  myself for about twenty years." The claim needs someone standing behind it.
+- **Mechanism, not assertion.** Say why it works. The long exhale slows your
+  heart; the gap never closes because the target moves with you. Reasons are
+  what let someone disagree with you properly.
+- **Honest confidence.** 05 opens by saying it is the one on the list I am most
+  sure about, which only means something because the others don't claim that.
+  Where it worked for me and might not for you, say so.
+- **Hand it over at the end.** Not a punchline. The reader decides — that is the
+  whole posture of the site, and a closing line that lands too neatly takes it
+  back.
 
 ## The four things that actually decide if it works
 

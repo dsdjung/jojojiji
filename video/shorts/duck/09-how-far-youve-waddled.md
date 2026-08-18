@@ -1,10 +1,10 @@
-# 09 — Measure backward, not forward
+# 09 — Why the target keeps moving
 
 **Sign:** Be proud of how far you've waddled.
 **Length:** 25-30s, vertical 9:16
 
-One shot, held for the whole thing. The duck does not need to do anything and
-neither does the camera; the voice carries it.
+One shot, held throughout. The duck doesn't need to do anything and neither does
+the camera; the voice carries it.
 
 ## Shot
 
@@ -16,13 +16,15 @@ Somewhere with distance behind — a path, a long window, a staircase.
 
 ## Voiceover
 
-*83 words. Read it slower than feels right — the sign says to breathe.*
+*79 words. Read it slower than feels right — the sign says to breathe.*
 
-Here is why you never feel like you are getting anywhere. You are measuring the gap between here and where you want to be, and that gap does not close — every time you get better you can see further, so the target moves with you.
+Here's why you never feel like you're getting anywhere, and it took me far too long to work out.
 
-The fix is not to lower the target. It is to turn around occasionally.
+You measure the gap between here and where you want to be. That gap never closes, because every time you get better you can see further, so the target moves with you.
 
-Measured forward, you will feel behind forever. Measured backward, you have come a very long way. Both are true at the same time.
+The answer isn't a smaller target. It's turning round every so often.
+
+Forward, you'll feel behind forever. Backward, you've come a long way. Both are true at once.
 
 ## Sound
 
@@ -34,7 +36,7 @@ Be proud of how far you've waddled.
 
 ## Description
 
-Here is why you never feel like you are getting anywhere. You are measuring the gap between here and where you want to be, and that gap does not close — every time you get better you can see further, so the target moves with you.
+Here's why you never feel like you're getting anywhere, and it took me far too long to work out.
 
 From jojojiji — things worth knowing, written for my kids and readable by anyone.
 jojojiji.com
