@@ -1,47 +1,51 @@
 # Duck shorts
 
-Ten shorts. One plush duck, one sign, one small true thing each.
+Ten shorts. One plush duck holding one sign, and nothing else.
 
-The sign text comes from `docs/DUCK.md` and is fixed — it is a physical prop, so
-whatever is printed is what the short is about. Everything else is written to
-fit it.
+Sign text is fixed by `docs/DUCK.md` — it is a physical prop, so whatever is
+printed is the whole content. No voiceover, no captions, no cuts.
 
-## The rule these are written against
+## Why nothing else
 
-A short that only says "you're doing great" is worth nothing and gets scrolled.
-Every one of these carries something a person can actually do or check, and the
-duck is the reason they stayed long enough to hear it. Affirmation is the hook;
-the idea is the payload.
+A thirty-second short has to earn the time it asks for, so it needs an idea. A
+six-second one asks for almost nothing, and adding narration to it would be
+answering a question nobody asked. The sign says the thing. Anything else is
+someone explaining a joke.
 
-Same test as everything else here: would someone send it to one specific person
-they know? That is the only distribution that compounds.
+It is also the only version that scales. Ten of these is an afternoon, not ten
+shoots, and the format survives a hundred more signs.
+
+## The four things that actually decide if it works
+
+**Legible in two seconds.** This is the one that kills it. Someone is scrolling
+on a phone with the screen at half brightness. Fill more of the frame with the
+sign than feels right, write thick and dark, and check it by looking at the shot
+on a phone at arm's length before you keep it. If you have to squint, reshoot.
+
+**Something has to move.** A locked-off shot of a still object reads as a photo,
+and people scroll photos. It needs one small live thing: a breeze, light
+shifting, a hand setting the duck down and leaving, the sign settling. Not a
+camera move — something in the world.
+
+**Make it loop.** Shorts replay automatically. If the first and last frame match,
+it loops invisibly and one viewer watches four times, which is the cheapest
+watch-time there is. Start and end on the same framing, and cut on a moment
+where nothing is mid-motion.
+
+**Do not post it silent.** Silence reads as a broken video and people leave.
+Room tone is enough — a kitchen, birds, traffic through a window. Real sound
+beats library music here, because the whole point is that this duck is in
+somebody's actual house.
 
 ## Format
 
-Vertical 9:16. Target 25-30 seconds — long enough for one idea, short enough
-that nobody decides to leave. Under 60s to count as a Short.
+Vertical 9:16. Six seconds, which is two comfortable reads of the sign.
 
-Each file has the sign text, a shot list with timings, the voiceover, the
-on-screen text, and the description. Voiceover is 60-90 words; that is what fits
-in 25 seconds at a calm pace, and rushing it defeats the point of a duck telling
-you to breathe.
+Vary the setting across the ten. Same shelf ten times looks like one thing
+posted ten times.
 
-## Filming notes that apply to all ten
+## Longer versions
 
-Put the duck somewhere real. A desk with actual mess on it, a kitchen counter, a
-windowsill at dusk. A clean studio backdrop makes it an advert; a real room makes
-it a friend's photo.
-
-Hold each shot longer than feels comfortable. The subject is stillness. Cutting
-every 1.5 seconds contradicts the words.
-
-Natural light, camera at duck height, not looking down at it. Eye level makes it
-a companion. Above makes it a toy.
-
-No music with lyrics. Either room tone, or something quiet enough that the
-voiceover does not have to fight it.
-
-## Order
-
-`01` through `10` is not a running order — post them in whatever suits the week.
-`05` and `07` are the two most immediately useful and are the ones to lead with.
+`notes-for-posts.md` holds a written idea per sign — what each one is really
+about. Those are for jojojiji posts, not for these videos. If a sign lands, the
+post is where it gets explained.

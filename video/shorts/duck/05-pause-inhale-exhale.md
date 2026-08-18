@@ -1,47 +1,29 @@
-# 05 — The double inhale, and why the exhale matters more
+# 05 — Pause. Inhale. Exhale. Waddle forward
 
 **Sign:** Pause. Inhale. Exhale. Waddle forward
+**Length:** 6s, vertical 9:16, looping
 
-**Length:** 25-30s, vertical 9:16
+## Shot
 
----
+Somewhere quiet — the edge of a bed, a step, a car at night.
 
-## Setting
+**Framing.** Close. Sign filling most of the frame, the room only just readable behind.
 
-Anywhere quiet. The edge of a bed, a step, a passenger seat at night.
+**The thing that moves.** Almost nothing. A curtain, headlights passing, breath if it is cold.
 
-## Shots
+Start and end on the same framing so it loops without a seam.
 
-| Time | Shot |
-|---|---|
-| 0:00-0:03 | Duck and sign, close. |
-| 0:03-0:16 | Static — and genuinely do the breathing in real time so the viewer can follow along. |
-| 0:16-0:24 | Slow pull back. |
-| 0:24-0:30 | Hold wide. Nothing happens. That is the shot. |
+## Sound
 
-## Voiceover
+Room tone from wherever this was shot. Not silent.
 
-*86 words. Read it slower than feels right.*
+## Title
 
-This one is real, and it is faster than anything else I know.
-
-Two inhales through the nose. A normal one, then a short top-up on top of it. Then a long slow exhale through the mouth, longer than the inhale was.
-
-The second inhale reopens the small air sacs in your lungs, and the long exhale is what actually slows your heart down. That is the part people skip. Breathing in is not the calming bit. Breathing out is.
-
-Do it twice. About thirty seconds.
-
-## On screen
-
-Cut in over the voiceover, one at a time. Keep the sign readable underneath.
-
-- two inhales, one long exhale
-- the exhale is the part that works
-- about thirty seconds
+Pause. Inhale. Exhale. Waddle forward
 
 ## Description
 
-Two inhales, one long exhale. The exhale slows your heart — that is the part people skip.
+Pause. Inhale. Exhale. Waddle forward
 
 From jojojiji — things worth knowing, written for my kids and readable by anyone.
 jojojiji.com
